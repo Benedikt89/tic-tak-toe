@@ -10,8 +10,8 @@ interface Icounter {
     }
 }
 
-export const counterApi = {
-    fetchCount () {
+export const gameDataApi = {
+    fetchData () {
         return instance.get('count')
             .then(res => {
                 if(res.status >= 200) {
@@ -22,7 +22,7 @@ export const counterApi = {
                 return 0;
             })
     },
-    increaseCount (quan:number) {
+    postData (quan:number) {
         return instance.patch('count', {count: quan + 1})
             .then(res => {
                 if(res.status >= 200) {
@@ -32,14 +32,5 @@ export const counterApi = {
             .catch(()=> {
                 return 0;
             })
-    },
-    async decreaseCount (quan:number) {
-        const response =  await instance.get<Icounter>('count');
-        try {
-            const res = await instance.patch('count', {count: quan -1 })
-            return res.data
-        } catch (e) {
-            return "0"
-        }
     }
 };

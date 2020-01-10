@@ -1,110 +1,92 @@
-import {IAppState} from "../types/types";
-import {Dispatch} from "redux";
-import {counterApi} from "./api";
-import {AppStateType} from "../redux/store";
-import {ThunkDispatch} from "redux-thunk";
+import {I_FieldItem, I_ScoreData, IGameState} from "../types/types";
+import {
+    IActions,
+    INCREASE_COUNT,
+    SET_IS_FETCHING,
+    SET_IS_GAME_FREEZED,
+    SET_TURN_SUCCESS
+} from "./actions";
 
-const INCREASE_QUANTITY = 'PRODUCTS/INCREASE_QUANTITY';
-const DECREASE_QUANTITY = 'PRODUCTS/DECREASE_QUANTITY';
-const SET_ORDER_SUCCESS = 'ORDER/SET_ORDER_SUCCESS';
-const SET_IS_FETCHING = 'COMMON/SET_IS_FETCHING';
-
-const initialState:IAppState = {
-    totalPrice: 0,
-    totalQuantity: 0,
+const initialState:IGameState = {
+    fields: [
+        {
+            id: 0,
+            status: null,
+        },
+        {
+            id: 1,
+            status: null,
+        },
+        {
+            id: 2,
+            status: null,
+        },
+        {
+            id: 3,
+            status: null,
+        },
+        {
+            id: 4,
+            status: null,
+        },
+        {
+            id: 5,
+            status: null,
+        },
+        {
+            id: 6,
+            status: null,
+        },
+        {
+            id: 7,
+            status: null,
+        },
+        {
+            id: 8,
+            status: null,
+        }
+    ],
+    userScore: {
+        winsScore: 0,
+        failsScore: 0,
+        drawsScore: 0
+    },
+    computerScore: {
+        winsScore: 0,
+        failsScore: 0,
+        drawsScore: 0
+    },
+    isFreezed: false,
     isFetching: false,
-    selectedFilter: 'All',
-    order: [{name: 'one', id: '1'}],
+    selectedFilter: 'USER',
 };
 
-type IActions = I_increaseQuantity | I_decreaseQuantity | I_orderSuccess | I_toggleIsFetching
-type GetStateType = () => AppStateType
-
-const reducer = (state:IAppState = initialState, action:IActions) => {
+const reducer = (state:IGameState = initialState, action:IActions) => {
     switch (action.type) {
-        //setting fetching status
+        //setting fetching and freezed status
         case SET_IS_FETCHING:
             return {
                 ...state,
                 isFetching: action.status,
             };
-        //adding feched products to state
-        case INCREASE_QUANTITY:
+        case SET_IS_GAME_FREEZED:
+            return {
+                ...state,
+                isFreezed: action.status,
+            };
+        //adding feched gamedata to state
+        case INCREASE_COUNT:
             return {
                 ...state,
                 totalQuantity: action.count
             };
-        //decrease quantity of single product in state
-        case DECREASE_QUANTITY:
+        case SET_TURN_SUCCESS:
             return {
                 ...state,
-                totalQuantity: action.count
-            };
-        case SET_ORDER_SUCCESS:
-            return {
-                ...state,
-                totalQuantity: action.status,
             };
         default:
             return state;
     }
-};
-
-//interfaces
-interface I_increaseQuantity {
-    type: typeof INCREASE_QUANTITY,
-    count: number
-}
-interface I_decreaseQuantity {
-    type: typeof DECREASE_QUANTITY,
-    count: number
-}
-interface I_orderSuccess {
-    type: typeof SET_ORDER_SUCCESS,
-    status: number
-}
-interface I_toggleIsFetching {
-    type: typeof SET_IS_FETCHING,
-    status: boolean
-}
-//LOCAL ACTIONS
-export const _increaseQuantity = (count:string):I_increaseQuantity => {
-    return {
-        type: INCREASE_QUANTITY, count: +count
-    }
-};
-export const _decreaseQuantity = (count:string):I_decreaseQuantity => {
-    return {
-        type: DECREASE_QUANTITY, count: +count
-    }
-};
-export const _orderSuccess = (status:string):I_orderSuccess => {
-    return{
-        type: SET_ORDER_SUCCESS, status: +status
-    }
-};
-
-//EXTERNAL ACTIONS
-export const increaseQuantity = (count:number) => async (dispatch: ThunkDispatch<{},{},IActions>) => {
-    let res = await counterApi.increaseCount(count);
-    dispatch(_increaseQuantity(res.count));
-};
-export const decreaseQuantity = (count:number) => async (dispatch: ThunkDispatch<{},{},IActions>) => {
-    let res = await counterApi.decreaseCount(count);
-    dispatch(_decreaseQuantity(res.count));
-};
-const toggleIsFetching = (status:boolean):I_toggleIsFetching => {
-    return {
-        type: SET_IS_FETCHING, status
-    }
-};
-
-//FETCH ACTIONS
-export const fetchCatalog = () => async (dispatch: ThunkDispatch<{},{},IActions>, getState: GetStateType) => {
-    dispatch(toggleIsFetching(true));
-    let res = await counterApi.fetchCount();
-    dispatch(_orderSuccess(res.count));
-    dispatch(toggleIsFetching(false));
 };
 
 

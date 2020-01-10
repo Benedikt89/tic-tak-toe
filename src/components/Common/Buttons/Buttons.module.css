@@ -1,0 +1,35 @@
+
+.btnSmall
+{
+    font-weight: 600;
+
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    border: 1px solid #ffbc80;
+}
+.btnSmallMinus
+{
+    padding-bottom: 4px;
+
+    composes: btnSmall;
+}
+
+.btnAdd
+{
+    min-width: 6rem;
+    min-height: 2rem;
+
+    composes: mainBtn from './../../App.css';
+}
+
+.success {
+    background-color: #83c318;
+    border-color: #83c318;
+    color: #FFFFFF;
+}
+.success:hover {
+    background-color: #83c318;
+    border-color: #83c318;
+}

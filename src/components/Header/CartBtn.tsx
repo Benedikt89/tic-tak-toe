@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 
 interface IProps {
     totalQuantity: number,
-    totalPrice: number
+    totalPrice?: number
 }
 
 function CartBtn({totalQuantity, totalPrice}:IProps) {
