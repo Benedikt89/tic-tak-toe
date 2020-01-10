@@ -8,4 +8,5 @@ export interface IAppState {
     totalPrice: number,
     totalQuantity: number,
     isFetching: boolean,
+    selectedFilter: string
 }

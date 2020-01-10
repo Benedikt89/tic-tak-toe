@@ -1,7 +1,7 @@
 import {IAppState} from "../types/types";
 import {Dispatch} from "redux";
-import {counterApi} from "../api/api";
-import {AppStateType} from "./store";
+import {counterApi} from "./api";
+import {AppStateType} from "../redux/store";
 import {ThunkDispatch} from "redux-thunk";
 
 const INCREASE_QUANTITY = 'PRODUCTS/INCREASE_QUANTITY';
@@ -13,6 +13,7 @@ const initialState:IAppState = {
     totalPrice: 0,
     totalQuantity: 0,
     isFetching: false,
+    selectedFilter: 'All',
     order: [{name: 'one', id: '1'}],
 };
 

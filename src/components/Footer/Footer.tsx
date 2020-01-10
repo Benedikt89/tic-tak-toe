@@ -11,21 +11,22 @@ const Footer = () => {
                     <div className={style.containerRow}>
                         <div className={style.containerCol}>
                                 <h4>
-                                    РЕКВИЗИТЫ КОМПАНИИ
+                                    CREATED BY
                                 </h4>
-                                <p>Общество с ограниченной ответственностью «Печь Орин»</p>
-                                <p>220035, г. Минск, ул. Бачило, д. 18</p>
-                                <p>УНП 192810299</p>
-                                <p>Регистрационный номер в ТР РБ: 402852</p>
+                                <p>Constantine Kostka</p>
+                                <p>г. Минск, ул. Козлова, д. 35</p>
+                                <p>https://github.com/Benedikt89</p>
+
                         </div>
                         <div className={style.containerCol}>
 
                                 <h4>
                                     КОНТАКТЫ
                                 </h4>
-                                <p>Телефон: +375 33 6580220</p>
-                                <p>E-mail: info@pechorin.by</p>
-                                <p>Сайт: pechorin.by</p>
+                                <p>Телефон: +375 29 3743228</p>
+                                <p>Телефон: +375 33 6858121</p>
+                                <p>E-mail: constantine.kostka@gmail.com</p>
+                                <p>Сайт: https://benedikt89.github.io/portfolio/</p>
 
                         </div>
                     </div>
@@ -34,7 +35,7 @@ const Footer = () => {
                     </div>
                     <hr/>
                     <div className={style.container}>
-                        <span>© 2019 Copyright: pechorin.by</span>
+                        <span>© 2019 Copyright: constantine</span>
                     </div>
 
                 </div>

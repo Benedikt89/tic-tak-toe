@@ -4,7 +4,7 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
-import {fetchCatalog, increaseQuantity, decreaseQuantity} from "../redux/reducer";
+import {fetchCatalog, increaseQuantity, decreaseQuantity} from "../game/reducer";
 import {AppStateType} from "../redux/store";
 import '../App.css';
 import style from './Main.module.css';
