@@ -1,0 +1,39 @@
+.App {
+    text-align: center;
+    box-shadow: 0 0 5px 0 #00004b;
+}
+
+.banner {
+    background-color: #1f1f20;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 0;
+    position: relative;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+    min-height: 120vh;
+}
+
+
+.container {
+    composes: container from './../App.css';
+}
+.mainWrapper {
+    min-height: 120vh;
+}
+.stickyWrapper {
+    position: fixed;
+    position: -webkit-sticky;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+@media (min-width: 1200px){
+    .stickyWrapper{
+        max-width: 1280px;
+    }
+}

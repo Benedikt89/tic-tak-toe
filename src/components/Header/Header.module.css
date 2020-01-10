@@ -1,0 +1,84 @@
+.headerWrapper {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 4rem;
+    background-color: inherit;
+    padding: 0 9rem;
+    box-shadow: 0 8px 10px rgba(159, 90, 12, 0.13);
+}
+.label > img {
+    position: absolute;
+    text-align: center;
+    left: -21px;
+    top: -8px;
+    height: 7.3rem;
+    width: 10.3rem;
+    padding: 0;
+    box-shadow: 0 8px 10px rgba(159, 90, 12, 0.13);
+    box-sizing: content-box;
+    border-radius: 50%;
+    overflow: visible;
+}
+
+.navContainer {
+    display: flex;
+    flex-direction: row;
+}
+@media (max-width: 900px) and (min-width: 300px){
+    .navContainer {
+        display: none;
+    }
+}
+.navContainer > * {
+    text-decoration: none;
+    padding: 0 0.6rem;
+}
+.inform {
+    display: flex;
+    flex-wrap: wrap;
+}
+.inform > span{
+    margin: 0 15px;
+}
+@media(max-width: 550px) {
+    .inform {
+        display: none;
+    }
+}
+.active {
+    font-weight: 700;
+}
+
+.item {
+    margin-right: 1rem;
+    font-size: 1.4rem;
+    color: #fd7e14;
+}
+.item:hover {
+    border-bottom: 1px solid white;
+}
+.cartBtnWrapper {
+    position: absolute;
+    top: 0.6rem;
+    right: 1rem;
+    width: 9rem;
+    height: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: inherit;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #fd7e14;
+    border: 1px solid #FFFFFF;
+    border-radius: 0.8rem;
+}
+.cartName {
+    border-right: 1px solid #FFFFFF;
+    padding:  0 1rem 0 0.5rem;
+}

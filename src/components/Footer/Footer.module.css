@@ -1,0 +1,34 @@
+.footerWrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #343a40;
+}
+.footerWrapper > hr {
+    background-color: #1f1f20;
+}
+.container {
+    composes: container from './../../App.css';
+}
+.containerRow {
+    composes: row from './../../App.css';
+    justify-content: space-between;
+}
+.containerCol {
+    composes: container from './../../App.css';
+    flex-direction: column;
+    min-width: 16rem;
+    max-width: 50%;
+    text-align: initial;
+}
+.containerCol > p {
+    font-size: 0.8rem;
+    margin: 0.4rem;
+}
+.payment {
+    display: flex;
+
+}
+.payment > img {
+    height: 2rem;
+    margin: .5rem;
+}
