@@ -6,6 +6,7 @@ import {
     SET_IS_GAME_FREEZED,
     SET_TURN_SUCCESS
 } from "./actions";
+import {onMove} from "./gameLogic";
 
 const initialState:IGameState = {
     fields: [
@@ -56,8 +57,10 @@ const initialState:IGameState = {
         failsScore: 0,
         drawsScore: 0
     },
+    turns: 0,
     isFreezed: false,
     isFetching: false,
+    winner: null,
     selectedFilter: 'USER',
 };
 
@@ -81,9 +84,30 @@ const reducer = (state:IGameState = initialState, action:IActions) => {
                 totalQuantity: action.count
             };
         case SET_TURN_SUCCESS:
-            return {
-                ...state,
-            };
+            let isWinner = onMove(state.fields, state.turns);
+            let newFields = [...state.fields];
+            if (!isWinner) {
+                let computerMove = Math.floor(Math.random() * 9);
+
+                for (computerMove; computerMove < newFields.length; computerMove++) {
+                    if (!newFields[computerMove].status) {
+                        newFields[computerMove].status = "ZERO";
+                        break;
+                    } else {
+                        computerMove === 9 ? computerMove = 0 : computerMove = computerMove;
+                    }
+                }
+                return {
+                    ...state,
+                    fields: newFields,
+                    turns: state.turns++
+                };
+            } else {
+                return {
+                    ...state,
+                    winner: isWinner
+                }
+            }
         default:
             return state;
     }

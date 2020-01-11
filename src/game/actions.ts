@@ -87,29 +87,8 @@ export const onUserMove = (pressedField: I_FieldItem) =>
             }
         })
 
-    };
 
-export const checkIsWinner = (fields: Array<I_FieldItem>) => {
-    let trippleCheck = (a: "ZERO" | "CROSS" | null, b: "ZERO" | "CROSS" | null, c: "ZERO" | "CROSS" | null): boolean => {
-        if (a !== null) {
-            if (b !== null) {
-                if (c !== null) {
-                    return a === b && b === c;
-                } else return false;
-            } else return false;
-        } else return false;
     };
-    let result = {}
-    trippleCheck(fields[0].status, fields[1].status, fields[2].status)
-    trippleCheck(fields[3].status, fields[4].status, fields[5].status)
-    trippleCheck(fields[6].status, fields[7].status, fields[8].status)
-    trippleCheck(fields[0].status, fields[3].status, fields[6].status)
-    trippleCheck(fields[1].status, fields[4].status, fields[7].status)
-    trippleCheck(fields[2].status, fields[5].status, fields[8].status)
-    trippleCheck(fields[0].status, fields[4].status, fields[8].status)
-    trippleCheck(fields[6].status, fields[4].status, fields[2].status)
-
-};
 
 //API ACTIONS
 export const fetchGameData = () =>
