@@ -5,9 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /*background-color: #090a0d;*/
-  /*color: white;*/
-  /*font-size: 2rem;*/
+  background-color: #090a0d;
+  color: #5a5a5a;
+  font-size: 2rem;
 }
 @media (min-width: 220px) and (max-width: 767px) {
   body {

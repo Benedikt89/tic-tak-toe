@@ -1,0 +1,40 @@
+.buttonWrapper{
+  border-radius: 5%;
+  width: 100%;
+  border: 1px solid grey;
+  overflow: hidden;
+  position: relative;
+  float: left;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.itemDog {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-transition: all .1s;
+  -moz-transition: all .1s;
+  -o-transition: all .1s;
+  transition: all .1s;
+  visibility: hidden;
+}
+.itemDog:hover{
+  transform: scale(1.1);
+}
+.itemDog:focus{
+  outline: 1px solid transparent;
+}
+
+.show {
+  composes: itemDog;
+  visibility: visible;
+}
+
+.success {
+  border: 2px solid darkgreen;
+}
+.error {
+  border: 2px solid red;
+}

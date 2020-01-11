@@ -2,7 +2,7 @@
 {
     text-align: center;
 
-    box-shadow: 0 0 5px 0 #00004b;
+    box-shadow: 0 0 5px 0 #434343;
 }
 .banner
 {
@@ -34,6 +34,25 @@
     justify-content: center;
 
     min-height: 120vh;
+}
+.gameWrapper
+{
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+.gameGrid
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-gap: 3%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 5%;
 }
 
 .container
@@ -150,14 +169,12 @@ button
     text-align: center;
     vertical-align: middle;
     text-decoration: none;
-    color: #f50;
 
     font-weight: 400;
 
     display: inline-block;
 
     box-sizing: border-box;
-    max-height: 3rem;
     margin: .5rem;
     padding: 8px 20px;
 

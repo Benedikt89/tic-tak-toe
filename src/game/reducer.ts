@@ -1,113 +1,74 @@
-import {I_FieldItem, I_ScoreData, IGameState} from "../types/types";
+import {I_fieldItem, I_gameState} from "../types/types";
 import {
     IActions,
-    INCREASE_COUNT,
+    SET_AI_TURN, SET_FETCH_SUCCESS,
     SET_IS_FETCHING,
-    SET_IS_GAME_FREEZED,
-    SET_TURN_SUCCESS
+    SET_IS_GAME_FROZEN, SET_TURN,
 } from "./actions";
-import {onMove} from "./gameLogic";
 
-const initialState:IGameState = {
-    fields: [
-        {
-            id: 0,
-            status: null,
-        },
-        {
-            id: 1,
-            status: null,
-        },
-        {
-            id: 2,
-            status: null,
-        },
-        {
-            id: 3,
-            status: null,
-        },
-        {
-            id: 4,
-            status: null,
-        },
-        {
-            id: 5,
-            status: null,
-        },
-        {
-            id: 6,
-            status: null,
-        },
-        {
-            id: 7,
-            status: null,
-        },
-        {
-            id: 8,
-            status: null,
-        }
-    ],
-    userScore: {
+const initialState: I_gameState = {
+    fields: [...Array(9)].map((el, index)=> ({id: index, status: null})),
+
+    player1Score: {
         winsScore: 0,
         failsScore: 0,
         drawsScore: 0
     },
-    computerScore: {
+    player2Score: {
         winsScore: 0,
         failsScore: 0,
         drawsScore: 0
     },
     turns: 0,
-    isFreezed: false,
+    isFrozen: false,
     isFetching: false,
     winner: null,
     selectedFilter: 'USER',
 };
 
-const reducer = (state:IGameState = initialState, action:IActions) => {
+const reducer = (state: I_gameState = initialState, action: IActions) => {
     switch (action.type) {
-        //setting fetching and freezed status
+        //setting fetching and frozen status
         case SET_IS_FETCHING:
             return {
                 ...state,
                 isFetching: action.status,
             };
-        case SET_IS_GAME_FREEZED:
+        case SET_IS_GAME_FROZEN:
             return {
                 ...state,
-                isFreezed: action.status,
+                isFrozen: action.status,
             };
-        //adding feched gamedata to state
-        case INCREASE_COUNT:
+        //adding fetched game data to state
+        case SET_FETCH_SUCCESS:
             return {
                 ...state,
-                totalQuantity: action.count
+                ...action.data
             };
-        case SET_TURN_SUCCESS:
-            let isWinner = onMove(state.fields, state.turns);
+        case SET_TURN:
+            return {
+                ...state,
+                turns: state.turns + 1,
+                fields: action.newFields
+            };
+        case SET_AI_TURN:
+            let computerMove = Math.floor(Math.random() * 9);
             let newFields = [...state.fields];
-            if (!isWinner) {
-                let computerMove = Math.floor(Math.random() * 9);
 
-                for (computerMove; computerMove < newFields.length; computerMove++) {
-                    if (!newFields[computerMove].status) {
-                        newFields[computerMove].status = "ZERO";
-                        break;
-                    } else {
-                        computerMove === 9 ? computerMove = 0 : computerMove = computerMove;
-                    }
-                }
-                return {
-                    ...state,
-                    fields: newFields,
-                    turns: state.turns++
-                };
-            } else {
-                return {
-                    ...state,
-                    winner: isWinner
+            for (computerMove; computerMove < newFields.length; computerMove++) {
+                if (!newFields[computerMove].status) {
+                    newFields[computerMove].status = "ZERO";
+                    break;
+                } else {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    computerMove === 9 ? computerMove = 0 : computerMove;
                 }
             }
+            return {
+                ...state,
+                fields: newFields,
+                turns: state.turns + 1
+            };
         default:
             return state;
     }

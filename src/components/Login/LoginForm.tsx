@@ -9,10 +9,10 @@ const LoginUserForm = (props: any) => {
 
     return (
         <form className={style.formControl} onSubmit={handleSubmit}>
-            <Field name="phone"
+            <Field name="username"
                    type="text"
                    component={renderField}
-                   label="Номер Телефона"
+                   label="Имя Пользователя"
                    validate={[required, minLength4, maxLength15]}
             />
             <Field name="password"

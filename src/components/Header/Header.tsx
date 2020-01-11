@@ -3,8 +3,7 @@ import style from './Header.module.css';
 import {NavLink} from "react-router-dom";
 
 interface IProps {
-    totalQuantity: number,
-    totalPrice: number
+    turns: number
 }
 function Header(props:IProps) {
     return (
@@ -15,25 +14,25 @@ function Header(props:IProps) {
                 </div>
             </NavLink>
             <div className={style.navContainer}>
+                <div>
+                    <div className={style.item}>
+                        EndGame
+                    </div>
+                </div>
+                <div>
+                    <div className={style.item}>
+                        LogOut
+                    </div>
+                </div>
                 <NavLink to="/about" activeClassName={style.active}>
                     <div className={style.item}>
                         About
                     </div>
                 </NavLink>
-                <NavLink to="/test" activeClassName={style.active}>
-                    <div className={style.item}>
-                        testPage
-                    </div>
-                </NavLink>
-                <NavLink to="/order" activeClassName={style.active}>
-                    <div className={style.item}>
-                        Order
-                    </div>
-                </NavLink>
             </div>
             <div className={style.inform}>
-                <span>Мы работаем с пн.-пт. с 8 до 19.00</span>
-                <span>+375 (33) 658-02-20</span>
+                <span>Turns</span>
+                <span>{props.turns}</span>
             </div>
         </header>
     );

@@ -1,33 +1,39 @@
 import React, {Component} from 'react';
-import {withRouter} from "react-router-dom";
-import {compose} from "redux";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
-import {fetchCatalog, increaseQuantity, decreaseQuantity} from "../game/reducer";
 import {AppStateType} from "../redux/store";
 import '../App.css';
 import style from './Main.module.css';
+import {fetchGameData} from "../game/actions";
+import GameScreen from "./Game/gameScreen";
+import {getTurns} from "../game/selectors";
+import {checkIsAuth, logOut} from "../authorisation/authReducer";
+import {getIsAuth} from "../authorisation/selectors";
 
 interface IProps {
     title?: string
 }
 
 interface IConnectProps {
-    isFetching: boolean,
-    totalQuantity: number,
-    totalPrice: number,
+    isAuth: boolean,
+    turns: number
 }
 
 interface LinkDispatchProps {
-    fetchCatalog: () => void;
-    increaseQuantity: (count: number) => void;
-    decreaseQuantity: (count: number) => void;
+    fetchGameData: () => void
+    logOut: () => void
+    checkIsAuth: () => void
 }
 
-class Main extends Component<IProps & IConnectProps & LinkDispatchProps> {
+interface IMainProps extends IProps, IConnectProps, LinkDispatchProps, RouteComponentProps<{}> {}
+
+class Main extends Component<IMainProps> {
+
     componentDidMount() {
-        this.props.fetchCatalog();
+        this.props.checkIsAuth();
+        this.props.fetchGameData();
         //listning for errors
         window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors());
     }
@@ -43,18 +49,10 @@ class Main extends Component<IProps & IConnectProps & LinkDispatchProps> {
     render() {
         return (
             <div>
-                <Header totalQuantity={this.props.totalQuantity} totalPrice={this.props.totalPrice}/>
+                <Header turns={this.props.turns}/>
                 <div className={style.mainWrapper}>
                     <div>
-                        <span>{this.props.totalQuantity}</span>
-                        <button onClick={() => {
-                            this.props.increaseQuantity(this.props.totalQuantity)
-                        }}>+
-                        </button>
-                        <button onClick={() => {
-                            this.props.decreaseQuantity(this.props.totalQuantity)
-                        }}>-
-                        </button>
+                        <GameScreen/>
                     </div>
                 </div>
                 <Footer/>
@@ -66,12 +64,11 @@ class Main extends Component<IProps & IConnectProps & LinkDispatchProps> {
 
 const mapStateToProps = (state: AppStateType): IConnectProps => {
     return {
-        isFetching: state.reducer.isFetching,
-        totalQuantity: state.reducer.totalQuantity,
-        totalPrice: state.reducer.totalPrice,
+        isAuth: getIsAuth(state),
+        turns: getTurns(state)
     }
 };
-export default compose(
-    withRouter,
-    connect(mapStateToProps, {fetchCatalog, increaseQuantity, decreaseQuantity})
-)(Main);
+
+let ComposedComponent = connect(mapStateToProps, {fetchGameData, logOut, checkIsAuth})(Main);
+
+export default withRouter(ComposedComponent);
