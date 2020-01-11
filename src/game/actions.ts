@@ -1,23 +1,24 @@
 import {gameDataApi} from "./api";
 import {ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "../redux/store";
-import {I_dataToStore, I_fieldItem} from "../types/types";
+import {I_dataToStore, I_fieldItem, I_winner} from "../types/types";
 import {getWinner} from "./gameLogic";
+import {checkIsAuth} from "../authorisation/actions";
 
 type GetStateType = () => AppStateType
 
 export const RESET_COUNT = 'game/RESET_COUNT';
 export const SET_TURN = 'game/SET_TURN';
 export const SET_AI_TURN = 'game/SET_AI_TURN';
-export const END_GAME = 'game/SET_AI_TURN';
+export const END_GAME = 'game/SET_END_GAME';
 export const SET_FETCH_SUCCESS = 'app/SET_FETCH_SUCCESS';
 export const SET_IS_FETCHING = 'app/SET_IS_FETCHING';
 export const SET_IS_GAME_FROZEN = 'game/SET_IS_GAME_FROZEN';
 
-export type IActions =
+export type I_actions =
     I_resetCount | I_turn | I_aiTurn |
     I_toggleIsFetching | I_isGameFrozen | I_isGameFrozen |
-    I_fetchSuccess
+    I_fetchSuccess | I_endGame
 
 //interfaces
 interface I_resetCount {
@@ -34,10 +35,12 @@ interface I_turn {
 }
 interface I_aiTurn {
     type: typeof SET_AI_TURN,
+    newFields: Array<I_fieldItem>
 }
 interface I_endGame {
     type: typeof END_GAME,
-    winner: 'USER' | 'COMPUTER' | 'DRAW' | null
+    winner: I_winner,
+    fields: Array<I_fieldItem>
 }
 interface I_toggleIsFetching {
     type: typeof SET_IS_FETCHING,
@@ -59,9 +62,9 @@ export const _turn = (newFields: Array<I_fieldItem>): I_turn => {
         type: SET_TURN, newFields
     }
 };
-export const _AITurn = (): I_aiTurn => {
+export const _AITurn = (newFields: Array<I_fieldItem>): I_aiTurn => {
     return {
-        type: SET_AI_TURN
+        type: SET_AI_TURN, newFields
     }
 };
 export const _toggleIsFetching = (status: boolean): I_toggleIsFetching => {
@@ -76,10 +79,10 @@ export const _toggleIsGameFrozen = (status: boolean): I_isGameFrozen => {
 };
 
 //EXTERNAL ACTIONS
-export const endGame = (winner: 'USER' | 'COMPUTER' | 'DRAW' | null): I_endGame => ({ type: END_GAME, winner});
+export const endGame = (winner: I_winner, fields: Array<I_fieldItem>): I_endGame => ({ type: END_GAME, winner, fields});
 
 export const onUserMove = (pressedField: I_fieldItem) =>
-    async (dispatch: ThunkDispatch<{}, {}, IActions>, getState: GetStateType) => {
+    async (dispatch: ThunkDispatch<{}, {}, I_actions>, getState: GetStateType) => {
     //freezing game
         dispatch(_toggleIsGameFrozen(true));
         let newFields: Array<I_fieldItem> = getState().reducer.fields.map((f: I_fieldItem) => {
@@ -90,37 +93,57 @@ export const onUserMove = (pressedField: I_fieldItem) =>
     //setting new fields on user move
         dispatch(_turn(newFields));
 
-        let isWinner = getWinner(newFields, getState().reducer.turns);
-
-        if (!isWinner) {
-            dispatch(_AITurn());
-            let isAIwinner = getWinner(getState().reducer.fields, getState().reducer.turns);
-            if(isAIwinner) {
-                dispatch(endGame(isAIwinner));
-            }
-        } else {
-            dispatch(endGame(isWinner))
-        }
         setTimeout(()=>{
+            let isUserWinner = getWinner(newFields, getState().reducer.turns);
+
+            if (!isUserWinner.winner) {
+                let computerMove = Math.floor(Math.random() * 9);
+                let newFields = [...getState().reducer.fields];
+
+                for (computerMove; computerMove < newFields.length; computerMove++) {
+                    if (!newFields[computerMove].status) {
+                        newFields[computerMove].status = "ZERO";
+                        break;
+                    } else {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                        computerMove === 9 ? computerMove = 0 : computerMove;
+                    }
+                }
+                dispatch(_AITurn(newFields));
+
+                let isAIwinner = getWinner(newFields, getState().reducer.turns);
+
+                if(isAIwinner.winner) {
+                    dispatch(endGame(isAIwinner.winner, isAIwinner.fields));
+                }
+            } else {
+                dispatch(endGame(isUserWinner.winner, isUserWinner.fields))
+            }
+
             dispatch(_toggleIsGameFrozen(false))
         }, 1000)
     };
 
 //API ACTIONS
 export const fetchGameData = () =>
-    async (dispatch: ThunkDispatch<{}, {}, IActions>, getState: GetStateType) => {
-        dispatch(_toggleIsFetching(true));
+    async (dispatch: ThunkDispatch<{}, {}, I_actions>, getState: GetStateType) => {
         try {
-            let resAsString: string = await gameDataApi.fetchData();
-            let data = await JSON.parse(resAsString);
-            dispatch(_fetchSuccess(data));
+            dispatch(_toggleIsFetching(true));
+            let auth = dispatch(checkIsAuth());
+            let resAsString = await gameDataApi.fetchData();
+            await Promise.all([auth, resAsString]);
+            let data = null;
+            if (resAsString) {
+                data = JSON.parse(resAsString);
+            }
+            if (data !== null) dispatch(_fetchSuccess(data));
+            dispatch(_toggleIsFetching(false));
         } catch (e) {
-            console.log(e)
+            dispatch(_toggleIsFetching(false));
         }
-        dispatch(_toggleIsFetching(false));
     };
 export const postGameData = () =>
-    async (dispatch: ThunkDispatch<{}, {}, IActions>, getState: GetStateType) => {
+    async (dispatch: ThunkDispatch<{}, {}, I_actions>, getState: GetStateType) => {
         let state = getState().reducer;
         let data = {
             fields: state.fields,

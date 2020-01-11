@@ -1,6 +1,7 @@
 export interface I_fieldItem {
     id: number,
     status: string | null,
+    usedInWin: boolean
 }
 
 export interface I_scoreData {
@@ -16,11 +17,17 @@ export interface I_gameState {
     turns: 0,
     isFrozen: boolean,
     isFetching: boolean,
-    selectedFilter: 'USER' | 'COMPUTER',
+    currentTurn: I_currentTurn,
     winner: I_winner
 }
 
+export type I_currentTurn = 'CROSS' | 'ZERO' | null
 export type I_winner = 'USER' | 'COMPUTER' | 'DRAW' | null
+
+export interface I_winnerCheck {
+    fields: Array<I_fieldItem>,
+    winner: I_winner
+}
 
 export interface I_dataToStore {
     fields: Array<I_fieldItem>,

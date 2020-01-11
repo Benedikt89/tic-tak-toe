@@ -2,31 +2,35 @@ import React from 'react';
 import './../../App.css';
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/store";
-import {I_FieldItem} from "../../types/types";
+import {I_fieldItem, I_winner} from "../../types/types";
 import {getFields, getIsFrozen, getWinner} from "../../game/selectors";
 import {onUserMove} from "../../game/actions";
 import GameField from "./FieldElement";
 
-interface IConnectProps {
-    fields: Array<I_FieldItem>,
-    winner: string | null,
+interface I_connectedProps {
+    fields: Array<I_fieldItem>,
+    winner: I_winner,
     isFrozen: boolean
 }
+interface I_dispatchedProps {
+    onUserMove: (pressedField: I_fieldItem) => void
+}
+interface IMainProps extends I_connectedProps, I_dispatchedProps {}
 
-const GameScreen = (props: any) => {
+const GameScreen = ({fields, isFrozen, onUserMove, winner}: IMainProps) => {
     //Displaying cells
-    let gameButtons = props.fields.map((f: I_FieldItem, index: number) =>
+    let gameButtons = fields.map((f: I_fieldItem, index: number) =>
         <GameField
             key={f.id}
-            winner={props.winner}
-            isFrozen={props.isFrozen}
-            increaseCount={props.onUserMove}
+            winner={winner}
+            isFrozen={isFrozen}
+            onUserTurn={onUserMove}
             field={f}
         />);
     return (
-        <div>
-            {props.alertDisplay && <h2>VICTORY</h2>}
-            {!props.alertDisplay && <h2>TIC-TAC-TOE</h2>}
+        <div className="container">
+            {winner && <h2 className="warning">End Game {winner}</h2>}
+            {!winner && <h2>TIC-TAC-TOE</h2>}
             <div className="gameWrapper">
             <div className="gameGrid">
                 {gameButtons}
@@ -37,7 +41,7 @@ const GameScreen = (props: any) => {
     );
 };
 
-const mapStateToProps = (state: AppStateType): IConnectProps => {
+const mapStateToProps = (state: AppStateType): I_connectedProps => {
     return {
         fields: getFields(state),
         winner: getWinner(state),

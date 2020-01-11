@@ -1,0 +1,30 @@
+.formControl {
+    display: flex;
+    margin-top: 2rem;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+}
+.fieldWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    align-self: baseline;
+}
+
+
+.error textarea, .error input{
+    border: solid red 1px;
+}
+.errorMessage {
+    color: red;
+}
+.success textarea, .success input{
+    border: solid #0acc00 1px;
+}
+.row
+{
+    display: flex;
+    flex-direction: row;
+}

@@ -1,14 +1,14 @@
 import React from 'react';
 import style from '../FormControl.module.css';
 
-export interface IrenderFieldProps {
+export interface I_renderFieldProps {
     input:any
     label: string
     type: string
     meta: any
 }
 
-export const renderField = ({input, label, type, meta: {touched, error, warning}}:IrenderFieldProps) => {
+export const renderField = ({input, label, type, meta: {touched, error, warning}}:I_renderFieldProps) => {
     let classForField = () => {
         if(touched) {
             return style.fieldWrapper + ' ' + (error && touched ? style.error : style.success)

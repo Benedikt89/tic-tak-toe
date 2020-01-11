@@ -1,14 +1,17 @@
-import {I_fieldItem, I_gameState} from "../types/types";
+import {I_gameState} from "../types/types";
 import {
-    IActions,
+    END_GAME,
+    I_actions, RESET_COUNT,
     SET_AI_TURN, SET_FETCH_SUCCESS,
     SET_IS_FETCHING,
     SET_IS_GAME_FROZEN, SET_TURN,
 } from "./actions";
 
-const initialState: I_gameState = {
-    fields: [...Array(9)].map((el, index)=> ({id: index, status: null})),
+let fieldCreator = () =>
+    [...Array(9)].map((el, index) => ({id: index, status: null, usedInWin: false}));
 
+const initialState: I_gameState = {
+    fields: fieldCreator(),
     player1Score: {
         winsScore: 0,
         failsScore: 0,
@@ -23,10 +26,10 @@ const initialState: I_gameState = {
     isFrozen: false,
     isFetching: false,
     winner: null,
-    selectedFilter: 'USER',
+    currentTurn: null,
 };
 
-const reducer = (state: I_gameState = initialState, action: IActions) => {
+const reducer = (state: I_gameState = initialState, action: I_actions) => {
     switch (action.type) {
         //setting fetching and frozen status
         case SET_IS_FETCHING:
@@ -49,25 +52,50 @@ const reducer = (state: I_gameState = initialState, action: IActions) => {
             return {
                 ...state,
                 turns: state.turns + 1,
+                currentTurn: 'ZERO',
                 fields: action.newFields
             };
-        case SET_AI_TURN:
-            let computerMove = Math.floor(Math.random() * 9);
-            let newFields = [...state.fields];
-
-            for (computerMove; computerMove < newFields.length; computerMove++) {
-                if (!newFields[computerMove].status) {
-                    newFields[computerMove].status = "ZERO";
-                    break;
-                } else {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    computerMove === 9 ? computerMove = 0 : computerMove;
-                }
+        case END_GAME:
+            switch (action.winner) {
+                case "COMPUTER":
+                    return {
+                        ...state,
+                        player1Score: {...state.player1Score, drawsScore: state.player1Score.failsScore + 1},
+                        player2Score: {...state.player2Score, drawsScore: state.player2Score.winsScore + 1},
+                        winner: action.winner,
+                    };
+                case "DRAW":
+                    return {
+                        ...state,
+                        player1Score: {...state.player1Score, drawsScore: state.player1Score.drawsScore + 1},
+                        player2Score: {...state.player2Score, drawsScore: state.player2Score.drawsScore + 1},
+                        winner: action.winner,
+                    };
+                case "USER":
+                    return {
+                        ...state,
+                        player1Score: {...state.player1Score, winsScore: state.player1Score.winsScore + 1},
+                        player2Score: {...state.player2Score, failsScore: state.player2Score.failsScore + 1},
+                        winner: action.winner,
+                    };
+                default:
+                    return state;
             }
+        case RESET_COUNT:
             return {
                 ...state,
-                fields: newFields,
-                turns: state.turns + 1
+                turns: 0,
+                fields: fieldCreator(),
+                winner: null,
+                currentTurn: null
+            };
+        case SET_AI_TURN:
+
+            return {
+                ...state,
+                fields: action.newFields,
+                turns: state.turns + 1,
+                currentTurn: 'CROSS'
             };
         default:
             return state;

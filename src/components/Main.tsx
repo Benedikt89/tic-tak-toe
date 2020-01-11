@@ -8,67 +8,68 @@ import '../App.css';
 import style from './Main.module.css';
 import {fetchGameData} from "../game/actions";
 import GameScreen from "./Game/gameScreen";
-import {getTurns} from "../game/selectors";
-import {checkIsAuth, logOut} from "../authorisation/authReducer";
+import {getIsFetching, getTurns} from "../game/selectors";
+import {checkIsAuth, logIn, logOut} from "../authorisation/actions";
 import {getIsAuth} from "../authorisation/selectors";
+import LoginPage from "./Login/Login";
+import Preloader from "./Common/Preloader";
 
-interface IProps {
+interface I_props {
     title?: string
 }
 
-interface IConnectProps {
+interface I_connectedProps {
     isAuth: boolean,
     turns: number
+    error: string | null
+    isFetching: boolean
 }
 
-interface LinkDispatchProps {
+interface I_dispatchedProps {
     fetchGameData: () => void
     logOut: () => void
+    logIn: (data: any) => void
     checkIsAuth: () => void
 }
 
-interface IMainProps extends IProps, IConnectProps, LinkDispatchProps, RouteComponentProps<{}> {}
+interface I_MainProps extends I_props, I_connectedProps, I_dispatchedProps, RouteComponentProps<{}> {
+}
 
-class Main extends Component<IMainProps> {
+class Main extends Component<I_MainProps> {
 
     componentDidMount() {
-        this.props.checkIsAuth();
         this.props.fetchGameData();
-        //listning for errors
-        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors());
-    }
-
-    catchAllUnhandledErrors = (promiseRejectionEvent?: any): any => {
-        console.log('some error occured');
-    };
-
-    componentWillUnmount() {
-        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors())
     }
 
     render() {
         return (
             <div>
-                <Header turns={this.props.turns}/>
+                <Header turns={this.props.turns} alert={this.props.error} isAuth={this.props.isAuth}/>
                 <div className={style.mainWrapper}>
-                    <div>
-                        <GameScreen/>
-                    </div>
+                    {!this.props.isFetching ?
+                        this.props.isAuth ?
+                            <GameScreen/>
+                            :
+                            <LoginPage logIn={this.props.logIn}/>
+                        :
+                        <Preloader />
+                    }
                 </div>
                 <Footer/>
-
             </div>
         );
     }
 }
 
-const mapStateToProps = (state: AppStateType): IConnectProps => {
+const mapStateToProps = (state: AppStateType): I_connectedProps => {
     return {
         isAuth: getIsAuth(state),
-        turns: getTurns(state)
+        turns: getTurns(state),
+        error: state.auth.error,
+        isFetching: getIsFetching(state)
     }
 };
 
-let ComposedComponent = connect(mapStateToProps, {fetchGameData, logOut, checkIsAuth})(Main);
+let ComposedComponent = connect(mapStateToProps, {fetchGameData, logOut, checkIsAuth, logIn})(Main);
 
 export default withRouter(ComposedComponent);

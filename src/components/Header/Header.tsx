@@ -2,18 +2,19 @@ import React from 'react';
 import style from './Header.module.css';
 import {NavLink} from "react-router-dom";
 
-interface IProps {
+interface I_props {
     turns: number
+    alert?: string | null
+    isAuth: boolean
 }
-function Header(props:IProps) {
+function Header(props:I_props) {
     return (
-
         <header className={style.headerWrapper}>
             <NavLink to="/">
                 <div className={style.label}>
                 </div>
             </NavLink>
-            <div className={style.navContainer}>
+            {props.isAuth && <div className={style.navContainer}>
                 <div>
                     <div className={style.item}>
                         EndGame
@@ -29,11 +30,12 @@ function Header(props:IProps) {
                         About
                     </div>
                 </NavLink>
-            </div>
-            <div className={style.inform}>
+            </div>}
+            {props.alert ? <span>{props.alert}</span> :
+                <div className={style.inform}>
                 <span>Turns</span>
                 <span>{props.turns}</span>
-            </div>
+            </div>}
         </header>
     );
 }

@@ -4,27 +4,26 @@ import style from './FieldElement.module.css'
 import classNames from 'classnames/bind';
 import crossImg from './../../assets/icons/cross.png'
 import zeroImg from './../../assets/icons/zero.png'
-import {I_FieldItem} from "../../types/types";
+import {I_fieldItem, I_winner} from "../../types/types";
 
-interface IProps {
-    field: I_FieldItem
-    winner: string | null,
+interface I_Props {
+    field: I_fieldItem
+    winner: I_winner,
     isFrozen: boolean
-    increaseCount: ()=>void,
+    onUserTurn: (pressedField: I_fieldItem) => void,
 }
 
-class GameField extends React.Component<IProps> {
+class GameField extends React.Component<I_Props> {
     state = {
-        clickOn: false,
+        socketBlur: false,
         clickSuccess: false,
     };
 
 //bluring buttons after click to inform user about successful result or not
-    clickActive = () => {
-        this.setState({clickOn: true}, ()=>{
-            setTimeout(()=>{this.setState({clickOn: false, clickSuccess: false})}, 500)
+    clickTimeoutActive = () => {
+        this.setState({socketBlur: true}, ()=>{
+            setTimeout(()=>{this.setState({socketBlur: false, clickSuccess: false})}, 500)
         })
-       // cl();
     };
 
     render() {
@@ -41,24 +40,24 @@ class GameField extends React.Component<IProps> {
             }
         };
 
-
         // Styles for fields depends from user activity
         let classNameForWrapper = cx(style.buttonWrapper, {
-            success: this.state.clickOn && this.state.clickSuccess,
-            error: !this.props.field && this.state.clickOn && !this.state.clickSuccess,
+            success: this.state.socketBlur && this.state.clickSuccess,
+            error: this.props.field.status && this.state.socketBlur && !this.state.clickSuccess,
+            win: this.props.field.usedInWin
         });
 
         //function react on click
         let clickable = () => {
-            //If click on socket with image
-            if(this.props.field){
+            //If user can click on socket
+            if(!this.props.isFrozen && !this.props.field.status){
                 this.setState({clickSuccess: true})
             }
             //Calling timeout function to blur socket
-            this.clickActive();
-            //If click on Visible, increases count
-            if (this.props.field && this.props.winner) {
-                this.props.increaseCount();
+            this.clickTimeoutActive();
+
+            if (!this.props.field.status && !this.props.winner && !this.props.isFrozen) {
+                this.props.onUserTurn(this.props.field);
             }
         };
 

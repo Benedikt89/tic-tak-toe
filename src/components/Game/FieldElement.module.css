@@ -1,7 +1,6 @@
 .buttonWrapper{
-  border-radius: 5%;
+  background-color: #1f1f20;
   width: 100%;
-  border: 1px solid grey;
   overflow: hidden;
   position: relative;
   float: left;
@@ -37,4 +36,7 @@
 }
 .error {
   border: 2px solid red;
+}
+.win {
+  border: 2px solid orangered;
 }

@@ -1,35 +1,26 @@
 import axios from "axios";
+import {APIerrorLogger} from "../utils/errorLogger";
+import {I_logInData} from "./actions";
 
 const instance = axios.create({
     baseURL: "http://localhost:8421/",
     withCredentials: true
 });
 
-class APIError extends Error {
+class LoginError extends Error {
     constructor(message: string, public statusCode: number) {
         super(message);
     }
 }
 
 export const authorisationAPI = {
-    async logIn(data: any) {
+    async logIn(data: I_logInData) {
         try {
             let res = await instance.post('api.authentication.signin', data);
             return res.data;
         } catch (error) {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-                if (error.response.data.message) {
-                    return error.response.data
-                }
-            } else if (error.request) {
-                console.log(error.request);
-            } else {
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
+            APIerrorLogger(error);
+            console.warn(error.config);
             throw error;
         }
     },
@@ -39,19 +30,20 @@ export const authorisationAPI = {
             if (res.status >= 200 && res.status < 300) {
                 return res.data;
             }
-        } catch (e) {
-            throw new APIError('unknown Error', e.status);
+        } catch (err) {
+            APIerrorLogger(err);
+            throw new Error('unknown Error');
         }
     },
     checkAuth() {
         return instance.get('api.authentication.check')
             .then((res) => {
-                debugger;
-                return res.data;
-            }).catch(res => {
-                if (res.status === 401){
-                    throw new APIError("Incorrect Credentials", 401);
+                return res.statusText;
+            }).catch(err => {
+                if (err.response.status === 401){
+                    throw new LoginError(err.response.statusText, 401);
                 } else {
+                    APIerrorLogger(err);
                     throw new Error("Some Error Occurred");
                 }
             })

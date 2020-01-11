@@ -38,8 +38,10 @@
 .gameWrapper
 {
     width: 100%;
+    max-width: 80ch;
     padding-top: 100%;
     position: relative;
+    background-color: black;
 }
 .gameGrid
 {
@@ -52,9 +54,10 @@
     grid-gap: 3%;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    padding: 5%;
 }
-
+.warning {
+    color: orangered;
+}
 .container
 {
     display: flex;

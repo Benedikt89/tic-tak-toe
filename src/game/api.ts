@@ -1,10 +1,9 @@
 import axios from "axios";
-import {I_DataToStore} from "../types/types";
+import {APIerrorLogger} from "../utils/errorLogger";
 
 const instance = axios.create({
     baseURL: "http://localhost:8421/",
 });
-
 
 export const gameDataApi = {
     fetchData () {
@@ -13,16 +12,22 @@ export const gameDataApi = {
                 return res.data
             })
             .catch((err)=> {
-                return err;
+                APIerrorLogger(err);
+                if (err.response.status === 500) {
+                    return null;
+                } else {
+                    throw err;
+                }
             })
     },
     postData (data:string) {
         return instance.post('api.user.setstate', data)
             .then(res => {
-                    return res.data
+                return res.data
             })
-            .catch((e)=> {
-                return e;
+            .catch((err)=> {
+                APIerrorLogger(err);
+                throw err;
             })
     }
 };

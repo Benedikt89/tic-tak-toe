@@ -1,4 +1,4 @@
-import {I_FieldItem} from "../types/types";
+import {I_fieldItem, I_winnerCheck} from "../types/types";
 
 let trippleCheck = (a: string | null, b: string | null, c: string | null,): boolean => {
     if (a !== null) {
@@ -11,7 +11,7 @@ let trippleCheck = (a: string | null, b: string | null, c: string | null,): bool
     return false;
 };
 
-export const getWinner = (fields: Array<I_FieldItem>, turns: number): 'USER' | 'COMPUTER' | 'DRAW' | null => {
+export const getWinner = (fields: Array<I_fieldItem>, turns: number): I_winnerCheck => {
     const winningCombos = [
         [0, 1, 2],
         [3, 4, 5],
@@ -23,10 +23,17 @@ export const getWinner = (fields: Array<I_FieldItem>, turns: number): 'USER' | '
         [2, 4, 6]
     ];
     let winner = null;
+    let newFields = [...fields];
     winningCombos.forEach((combo, index) => {
-        if (trippleCheck(fields[combo[0]].status, fields[combo[1]].status, fields[combo[2]].status))
+        if (trippleCheck(fields[combo[0]].status, fields[combo[1]].status, fields[combo[2]].status)) {
             winner = fields[combo[0]].status === "CROSS" ? 'USER' : 'COMPUTER';
+            newFields[combo[0]].usedInWin = true;
+            newFields[combo[1]].usedInWin = true;
+            newFields[combo[2]].usedInWin = true;
+        }
     });
-    return winner ? winner : turns >= 9 ? winner : "DRAW";
+    return {
+        winner: winner ? winner : (turns >= 9 ? "DRAW" : winner),
+        fields: fields
+    };
 };
-

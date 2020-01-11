@@ -1,14 +1,14 @@
-import React, {Component, useRef} from "react";
+import React from "react";
 import style from '../Main.module.css';
 import LoginUserForm from "./LoginForm";
-
+import {I_logInData} from "../../authorisation/actions";
 
 interface I_LoginPage {
-    logIn: (data:any)=> void
+    logIn: (data: I_logInData)=> void
 }
 const LoginPage = ({logIn}:I_LoginPage) => {
-    const onUserSubmit = (formData:any) => {
-        logIn({phone: formData.phone, password: formData.password})
+    const onUserSubmit = (formData: any) => {
+        logIn({username: formData.username, password: formData.password})
     };
 
     return (
