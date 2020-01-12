@@ -22,7 +22,7 @@ class GameField extends React.Component<I_Props> {
 //bluring buttons after click to inform user about successful result or not
     clickTimeoutActive = () => {
         this.setState({socketBlur: true}, ()=>{
-            setTimeout(()=>{this.setState({socketBlur: false, clickSuccess: false})}, 500)
+            setTimeout(() => {this.setState({socketBlur: false, clickSuccess: false})}, 500)
         })
     };
 
@@ -30,7 +30,7 @@ class GameField extends React.Component<I_Props> {
         let cx = classNames.bind(style);
 
         //Style for Bg Image
-        let bgStyle = () =>{
+        let bgStyle = () => {
             if (this.props.field.status === 'CROSS') {
                 return {backgroundImage: `url(${crossImg})`};
             } else if (this.props.field.status === "ZERO") {
@@ -65,7 +65,7 @@ class GameField extends React.Component<I_Props> {
             <div onClick={clickable} className={classNameForWrapper}>
                 <div
                     style={bgStyle()}
-                    className={this.props.field ? style.show : style.itemDog}>
+                    className={this.props.field ? style.show : style.itemCell}>
                 </div>
             </div>
         );

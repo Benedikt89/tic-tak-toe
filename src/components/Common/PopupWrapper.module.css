@@ -2,7 +2,7 @@
 {
     justify-content: center;
 
-    composes: container from './../App.css';
+    composes: container from './../../App.css';
 }
 .popupWrapper
 {
@@ -51,7 +51,7 @@
     align-items: center;
     justify-content: space-around;
 
-    composes: row from './../App.css';
+    composes: row from './../../App.css';
 }
 .rowDiscr
 {
@@ -91,7 +91,7 @@
 {
     width: 6rem;
 
-    composes: mainBtn from './../App.css';
+    composes: mainBtn from './../../App.css';
 }
 .calculator
 {

@@ -13,12 +13,13 @@ export const SET_AI_TURN = 'game/SET_AI_TURN';
 export const END_GAME = 'game/SET_END_GAME';
 export const SET_FETCH_SUCCESS = 'app/SET_FETCH_SUCCESS';
 export const SET_IS_FETCHING = 'app/SET_IS_FETCHING';
+export const SET_ERROR = 'app/SET_ERROR';
 export const SET_IS_GAME_FROZEN = 'game/SET_IS_GAME_FROZEN';
 
 export type I_actions =
     I_resetCount | I_turn | I_aiTurn |
     I_toggleIsFetching | I_isGameFrozen | I_isGameFrozen |
-    I_fetchSuccess | I_endGame
+    I_fetchSuccess | I_endGame | I_setError
 
 //interfaces
 interface I_resetCount {
@@ -50,6 +51,10 @@ interface I_isGameFrozen {
     type: typeof SET_IS_GAME_FROZEN,
     status: boolean
 }
+interface I_setError {
+    type: typeof SET_ERROR,
+    message: null | string
+}
 
 //Internal ACTIONS
 export const _fetchSuccess = (data: I_dataToStore): I_fetchSuccess => {
@@ -75,6 +80,11 @@ export const _toggleIsFetching = (status: boolean): I_toggleIsFetching => {
 export const _toggleIsGameFrozen = (status: boolean): I_isGameFrozen => {
     return {
         type: SET_IS_GAME_FROZEN, status
+    }
+};
+export const _setError = (message: string | null): I_setError => {
+    return {
+        type: SET_ERROR, message
     }
 };
 
@@ -137,8 +147,11 @@ export const fetchGameData = () =>
                 data = JSON.parse(resAsString);
             }
             if (data !== null) dispatch(_fetchSuccess(data));
+            dispatch(_setError(null));
             dispatch(_toggleIsFetching(false));
-        } catch (e) {
+        } catch (err) {
+            console.log(err);
+            dispatch(_setError('network Problems'));
             dispatch(_toggleIsFetching(false));
         }
     };

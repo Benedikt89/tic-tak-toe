@@ -12,10 +12,13 @@ interface I_connectedProps {
     winner: I_winner,
     isFrozen: boolean
 }
+
 interface I_dispatchedProps {
     onUserMove: (pressedField: I_fieldItem) => void
 }
-interface IMainProps extends I_connectedProps, I_dispatchedProps {}
+
+interface IMainProps extends I_connectedProps, I_dispatchedProps {
+}
 
 const GameScreen = ({fields, isFrozen, onUserMove, winner}: IMainProps) => {
     //Displaying cells
@@ -28,13 +31,14 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner}: IMainProps) => {
             field={f}
         />);
     return (
-        <div className="container">
+        <div className="fieldSizeWrapper">
             {winner && <h2 className="warning">End Game {winner}</h2>}
             {!winner && <h2>TIC-TAC-TOE</h2>}
+
             <div className="gameWrapper">
-            <div className="gameGrid">
-                {gameButtons}
-            </div>
+                <div className="gameGrid">
+                    {gameButtons}
+                </div>
             </div>
 
         </div>

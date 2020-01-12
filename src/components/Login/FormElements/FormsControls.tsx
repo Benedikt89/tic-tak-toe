@@ -28,27 +28,5 @@ export const renderField = ({input, label, type, meta: {touched, error, warning}
     </div>
 )};
 
-export const DropDownSelect = ({input, label, times, meta: {touched, error, warning}}: any) => {
-
-    const renderSelectOptions = (option: string, index: number) => (
-        <option key={option} value={index}>{option}</option>
-    );
-
-    return (
-        <div>
-            <label>{label}</label>
-            <div className={style.fieldWrapper}>
-                <select {...input}>
-                    <option value="">Select</option>
-                    {times.map(renderSelectOptions)}
-                </select>
-                {touched &&
-                ((error && <span className={style.errorMessage}>{error}</span>)
-                    || (warning && <span className={style.errorMessage}>{warning}</span>))}
-            </div>
-        </div>
-    );
-};
-
 
 

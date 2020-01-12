@@ -18,10 +18,13 @@ export const authorisationAPI = {
         try {
             let res = await instance.post('api.authentication.signin', data);
             return res.data;
-        } catch (error) {
-            APIerrorLogger(error);
-            console.warn(error.config);
-            throw error;
+        } catch (err) {
+            if (err.response.status === 401){
+                throw new LoginError(err.response.statusText, 401);
+            } else {
+                APIerrorLogger(err);
+                throw new Error("Some Error Occurred");
+            }
         }
     },
     async logOut() {

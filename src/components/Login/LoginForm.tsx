@@ -4,8 +4,7 @@ import {Field, reduxForm} from "redux-form";
 import {renderField} from "./FormElements/FormsControls";
 import {maxLength15, minLength4, required} from "./FormElements/validators";
 
-const LoginUserForm = (props: any) => {
-    const {handleSubmit, pristine, submitting, error} = props;
+const LoginUserForm = ({handleSubmit, pristine, submitting, error}: any) => {
 
     return (
         <form className={style.formControl} onSubmit={handleSubmit}>
@@ -21,9 +20,7 @@ const LoginUserForm = (props: any) => {
                    label="Пароль"
                    validate={[required, minLength4]}
             />
-            {error && <div>
-                <span className={style.errorMessage}>{error}</span>
-            </div>}
+            {error && <span className={style.mainErrorMessage}>{error}</span>}
 
             <button type="submit" disabled={pristine || submitting}>Log In</button>
         </form>

@@ -1,5 +1,5 @@
 .buttonWrapper{
-  background-color: #1f1f20;
+  background-color: #090a0d;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -8,7 +8,7 @@
   cursor: pointer;
 }
 
-.itemDog {
+.itemCell {
   height: 100%;
   width: 100%;
   background-size: cover;
@@ -19,15 +19,15 @@
   transition: all .1s;
   visibility: hidden;
 }
-.itemDog:hover{
+.itemCell:hover{
   transform: scale(1.1);
 }
-.itemDog:focus{
+.itemCell:focus{
   outline: 1px solid transparent;
 }
 
 .show {
-  composes: itemDog;
+  composes: itemCell;
   visibility: visible;
 }
 

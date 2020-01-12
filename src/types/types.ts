@@ -18,7 +18,8 @@ export interface I_gameState {
     isFrozen: boolean,
     isFetching: boolean,
     currentTurn: I_currentTurn,
-    winner: I_winner
+    winner: I_winner,
+    error: null | string
 }
 
 export type I_currentTurn = 'CROSS' | 'ZERO' | null

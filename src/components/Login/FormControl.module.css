@@ -6,6 +6,7 @@
     align-items: start;
 }
 .fieldWrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -13,18 +14,24 @@
     align-self: baseline;
 }
 
-
 .error textarea, .error input{
     border: solid red 1px;
 }
-.errorMessage {
+.mainErrorMessage
+{
+    border: 1px solid red;
+    background-color: black;
+    border-radius: 5%;
+    padding: 2%;
+    margin: 5px;
     color: red;
+}
+.errorMessage {
+    composes: mainErrorMessage;
+    position: absolute;
+    top: -60%;
+    left: 0;
 }
 .success textarea, .success input{
     border: solid #0acc00 1px;
-}
-.row
-{
-    display: flex;
-    flex-direction: row;
 }

@@ -51,7 +51,6 @@ export const logIn = (data: I_logInData) => async (dispatch: ThunkDispatch<{}, {
         dispatch(_authorisationSuccess(true, res.userInfo ? res.userInfo : 'Stranger'));
     } catch (err) {
         let message = err.message.length > 0 ? err.message : "some error";
-
         dispatch(stopSubmit('logIn', {_error: message}))
     }
 };
