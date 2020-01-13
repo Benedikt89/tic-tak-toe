@@ -4,15 +4,18 @@
 
     box-shadow: 0 0 5px 0 #434343;
 }
-.warning {
+
+.warning
+{
     color: orangered;
 }
+
 .container
 {
     display: flex;
     flex-wrap: wrap;
-
     justify-content: center;
+
     box-sizing: border-box;
     width: 100%;
     margin-right: auto;
@@ -20,13 +23,17 @@
     padding-right: 15px;
     padding-left: 15px;
 }
+
 .row
 {
-    composes: container;
     flex-direction: row;
     flex-wrap: wrap;
+
     box-sizing: content-box;
+
+    composes: container;
 }
+
 .col
 {
     flex-direction: column;
@@ -72,7 +79,8 @@
 
 @media (max-width: 576px) and (min-width: 300px)
 {
-    .container, .row
+    .container,
+    .row
     {
         max-width: 350px;
         padding-right: 5px;
@@ -82,12 +90,6 @@
 
 button
 {
-    cursor: pointer;
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-    color: inherit;
-
     font-weight: 400;
 
     display: inline-block;
@@ -96,6 +98,12 @@ button
     margin: .5rem;
     padding: 8px 20px;
 
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+
+    color: inherit;
     border: solid 1px #999;
     border-radius: .4rem;
     background-color: inherit;
@@ -111,19 +119,26 @@ button:focus
     outline: 0;
 }
 
-input, select, textarea{
-    margin-top: .5rem;
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
+input,
+select,
+textarea
+{
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
+
+    display: block;
+
+    width: 100%;
+    max-width: 90%;
+    margin-top: .5rem;
+    padding: .375rem .75rem;
+
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
     color: inherit !important;
-    background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    max-width: 90%;
     background-color: inherit !important;
+    background-clip: padding-box;
 }

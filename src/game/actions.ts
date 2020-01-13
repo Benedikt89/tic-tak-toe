@@ -119,7 +119,7 @@ export const onUserMove = (pressedField: I_fieldItem) =>
             let isUserWinner = getWinner(newFields, getState().reducer.turns);
 
             if (!isUserWinner.winner) {
-                let computerMove = Math.floor(Math.random() * 9) - 1;
+                let computerMove = Math.floor(Math.random() * 8);
                 let newFields = [...getState().reducer.fields];
 
                 for (computerMove; computerMove < newFields.length; computerMove++) {
@@ -133,7 +133,7 @@ export const onUserMove = (pressedField: I_fieldItem) =>
                 }
                 dispatch(_turnZero(newFields));
 
-                let isAIwinner = getWinner(newFields, getState().reducer.turns);
+                let isAIwinner = getWinner( getState().reducer.fields, getState().reducer.turns);
 
                 if (isAIwinner.winner) {
                     dispatch(endGame(isAIwinner.winner, isAIwinner.fields));

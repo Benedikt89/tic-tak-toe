@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import './../../App.css';
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/store";
 import {I_fieldItem, I_scoreData, I_winner} from "../../types/types";
@@ -52,8 +51,8 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
     return (
         <div className={style.fieldSizeWrapper}>
             {winner &&
-            <h2 onClick={resetCount} className={style.warning}>
-                {winner === "DRAW" ? 'Nobody' : winner} is winner, click to reset
+            <h2 onClick={resetCount} className={style.win}>
+                {winner === "DRAW" ? 'Nobody' : winner} is winner, click here to reset
             </h2>}
             {!winner && <h2>TIC-TAC-TOE</h2>}
 

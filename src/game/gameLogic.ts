@@ -27,9 +27,18 @@ export const getWinner = (fields: Array<I_fieldItem>, turns: number): I_winnerCh
     winningCombos.forEach((combo, index) => {
         if (trippleCheck(fields[combo[0]].status, fields[combo[1]].status, fields[combo[2]].status)) {
             winner = fields[combo[0]].status === "CROSS" ? 'USER' : 'COMPUTER';
-            newFields[combo[0]].usedInWin = true;
-            newFields[combo[1]].usedInWin = true;
-            newFields[combo[2]].usedInWin = true;
+            let win = () => {
+                if (index <= 2) {
+                    return 'HORIZONTAL'
+                } else if (index >= 3 && index <= 5) {
+                    return 'VERTICAL'
+                } else if (index === 6) {
+                    return 'DRAW+90'
+                } else return 'DRAW-90'
+            };
+            newFields[combo[0]].usedInWin = win();
+            newFields[combo[1]].usedInWin = win();
+            newFields[combo[2]].usedInWin = win();
         }
     });
     return {

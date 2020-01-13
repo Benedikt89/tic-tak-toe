@@ -1,7 +1,7 @@
 export interface I_fieldItem {
     id: number,
     status: string | null,
-    usedInWin: boolean
+    usedInWin: I_usedInWin
 }
 
 export interface I_scoreData {
@@ -24,6 +24,7 @@ export interface I_gameState {
 
 export type I_currentTurn = 'CROSS' | 'ZERO' | null
 export type I_winner = 'USER' | 'COMPUTER' | 'DRAW' | null
+export type I_usedInWin = 'VERTICAL' | 'HORIZONTAL' | 'DRAW+90' | 'DRAW-90' | null
 
 export interface I_winnerCheck {
     fields: Array<I_fieldItem>,

@@ -43,7 +43,10 @@ class GameField extends React.Component<I_Props> {
         let classNameForWrapper = cx(style.buttonWrapper, {
             success: this.state.socketBlur && this.state.clickSuccess,
             error: this.props.field.status && this.state.socketBlur && !this.state.clickSuccess,
-            win: this.props.field.usedInWin
+            winHorisontal: this.props.field.usedInWin === 'HORIZONTAL',
+            winVertical: this.props.field.usedInWin === 'VERTICAL',
+            win90deg: this.props.field.usedInWin === 'DRAW+90',
+            winMinus90deg: this.props.field.usedInWin === 'DRAW-90',
         });
 
         let classNameCell = cx(style.itemCell,{

@@ -1,90 +1,129 @@
-.container {
+.container
+{
     composes: container from './../App.css';
 }
-.mainWrapper {
+
+.mainWrapper
+{
     display: flex;
-    min-height: 120vh;
     flex-direction: column;
+
+    min-height: 120vh;
 }
+
 .gameWrapper
 {
+    position: relative;
+
     width: 100%;
     max-width: 80ch;
-    padding-top: 100%;
-    position: relative;
-    background-color: black;
     margin-top: 2rem;
+    padding-top: 100%;
+
+    background-color: black;
 }
+
 .gameGrid
 {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
+
     display: grid;
+
     grid-gap: 3%;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
-.warning {
+
+.warning
+{
     color: orangered;
 }
+
+.win
+{
+    cursor: pointer;
+
+    color: orangered;
+}
+
 .fieldSizeWrapper
 {
-    composes: container;
     width: 70%;
+
+    composes: container;
 }
+
 .row
 {
     composes: row from './../App.css';
 }
+
 .icon
 {
     width: 25px;
     margin-left: 15px;
+
     -webkit-filter: drop-shadow(0px 0px 7px #596cff);
-    -moz-filter: drop-shadow(0px 0px 7px #596cff);
-    filter: drop-shadow(0px 0px 7px #596cff);
+       -moz-filter: drop-shadow(0px 0px 7px #596cff);
+            filter: drop-shadow(0px 0px 7px #596cff);
 }
+
 .popUpWrapper
 {
     position: absolute;
-    display: flex;
-    flex-direction: column;
     z-index: 1;
     bottom: 125%;
     left: 50%;
-    margin-left: -80px;
-    border: 1px solid red;
-    background-color: black;
-    border-radius: 5%;
-    padding: 2%;
-    color: red;
+
+    display: flex;
+    flex-direction: column;
+
     min-width: 10rem;
     min-height: 5rem;
+    margin-left: -80px;
+    padding: 2%;
+
     transition: all 5s ease-in-out;
+
+    color: red;
+    border: 1px solid red;
+    border-radius: 5%;
+    background-color: black;
 }
-.popUpWrapper ::after {
-    content: "";
+
+.popUpWrapper ::after
+{
     position: absolute;
     top: 100%;
     left: 50%;
+
     margin-left: -5px;
+
+    content: '';
+
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+
 .scoreButton
 {
     position: relative;
-    cursor: pointer;
-    padding: 2%;
-    border: 1px solid #596cff;
-    margin: 5px;
-    border-radius: 10%;
-    box-sizing: border-box;
+
     overflow: visible;
-    height: 2.5rem;
+
+    box-sizing: border-box;
     width: 9rem;
+    height: 2.5rem;
+    margin: 5px;
+    padding: 2%;
+
+    cursor: pointer;
+
+    border: 1px solid #596cff;
+    border-radius: 10%;
 }

@@ -8,7 +8,7 @@ import {
 } from "./actions";
 
 let fieldCreator = () =>
-    [...Array(9)].map((el, index) => ({id: index, status: null, usedInWin: false}));
+    [...Array(9)].map((el, index) => ({id: index, status: null, usedInWin: null}));
 
 const initialState: I_gameState = {
     fields: fieldCreator(),
@@ -66,8 +66,8 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
                 case "COMPUTER":
                     return {
                         ...state,
-                        player1Score: {...state.player1Score, drawsScore: state.player1Score.failsScore + 1},
-                        player2Score: {...state.player2Score, drawsScore: state.player2Score.winsScore + 1},
+                        player1Score: {...state.player1Score, failsScore: state.player1Score.failsScore + 1},
+                        player2Score: {...state.player2Score, winsScore: state.player2Score.winsScore + 1},
                         winner: action.winner,
                         currentTurn: null
                     };
