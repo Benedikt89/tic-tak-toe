@@ -1,9 +1,8 @@
 import React from 'react';
-import './../../App.css';
 import style from './FieldElement.module.css'
 import classNames from 'classnames/bind';
-import crossImg from './../../assets/icons/cross.png'
-import zeroImg from './../../assets/icons/zero.png'
+import crossImg from './../../assets/icons/cross.svg'
+import zeroImg from './../../assets/icons/zero.svg'
 import {I_fieldItem, I_winner} from "../../types/types";
 
 interface I_Props {
@@ -30,13 +29,13 @@ class GameField extends React.Component<I_Props> {
         let cx = classNames.bind(style);
 
         //Style for Bg Image
-        let bgStyle = () => {
+        let bgImage = () => {
             if (this.props.field.status === 'CROSS') {
-                return {backgroundImage: `url(${crossImg})`};
+                return crossImg
             } else if (this.props.field.status === "ZERO") {
-                return {backgroundImage: `url(${zeroImg})`}
+                return zeroImg
             } else {
-                return {backgroundImage: ``};
+                return '';
             }
         };
 
@@ -47,6 +46,10 @@ class GameField extends React.Component<I_Props> {
             win: this.props.field.usedInWin
         });
 
+        let classNameCell = cx(style.itemCell,{
+            cross: this.props.field.status === 'CROSS',
+            zero: this.props.field.status === 'ZERO',
+        });
         //function react on click
         let clickable = () => {
             //If user can click on socket
@@ -64,8 +67,8 @@ class GameField extends React.Component<I_Props> {
         return (
             <div onClick={clickable} className={classNameForWrapper}>
                 <div
-                    style={bgStyle()}
-                    className={this.props.field ? style.show : style.itemCell}>
+                    className={classNameCell}>
+                    <img alt={this.props.field.status ? this.props.field.status : ''} src={bgImage()}/>
                 </div>
             </div>
         );

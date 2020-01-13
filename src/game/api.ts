@@ -21,7 +21,7 @@ export const gameDataApi = {
             })
     },
     postData (data:string) {
-        return instance.post('api.user.setstate', data)
+        return instance.post('api.user.setstate', {data})
             .then(res => {
                 return res.data
             })

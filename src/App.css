@@ -4,34 +4,12 @@
 
     box-shadow: 0 0 5px 0 #434343;
 }
-
-.gameWrapper
-{
-    width: 100%;
-    max-width: 80ch;
-    padding-top: 100%;
-    position: relative;
-    background-color: black;
-}
-.gameGrid
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: grid;
-    grid-gap: 3%;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-}
 .warning {
     color: orangered;
 }
 .container
 {
     display: flex;
-    overflow: hidden;
     flex-wrap: wrap;
 
     justify-content: center;
@@ -41,11 +19,6 @@
     margin-left: auto;
     padding-right: 15px;
     padding-left: 15px;
-}
-.fieldSizeWrapper
-{
-    composes: container;
-    max-width: 600px;
 }
 .row
 {
@@ -57,33 +30,6 @@
 .col
 {
     flex-direction: column;
-}
-
-.mainBtn
-{
-    font-weight: 600;
-
-    display: inline-block;
-
-    margin: 2px 0;
-    padding: 5px 5px;
-
-
-    border: solid 1px rgba(255, 85, 0, .99);
-    border-radius: 5px;
-}
-.mainBtn:hover
-{
-    border-color: rgba(196, 67, 0, 0.99);
-    background-color: rgba(255, 85, 0, .99);
-    color: white;
-    font-weight: 600;
-}
-.mainBtn:active
-{
-    background-color: rgb(255, 85, 0);
-    color: #ffffff;
-    border-color: inherit;
 }
 
 @media (min-width: 1151px)

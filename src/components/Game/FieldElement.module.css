@@ -9,6 +9,7 @@
 }
 
 .itemCell {
+  position: relative;
   height: 100%;
   width: 100%;
   background-size: cover;
@@ -17,18 +18,30 @@
   -moz-transition: all .1s;
   -o-transition: all .1s;
   transition: all .1s;
-  visibility: hidden;
+  transform: scale(0.8);
 }
+
 .itemCell:hover{
-  transform: scale(1.1);
+  transform: scale(0.81);
 }
 .itemCell:focus{
   outline: 1px solid transparent;
 }
 
-.show {
-  composes: itemCell;
-  visibility: visible;
+.cross > img
+{
+  width: 100%;
+  -webkit-filter: drop-shadow(0px 0px 7px #02600a);
+  -moz-filter: drop-shadow(0px 0px 7px #02600a);
+  filter: drop-shadow(0px 0px 7px #02600a);
+}
+.zero > img
+{
+  -webkit-filter: drop-shadow(0px 0px 7px #994d00);
+  -moz-filter: drop-shadow(0px 0px 7px #994d00);
+  filter: drop-shadow(0px 0px 7px #994d00);
+  width: 100%;
+  z-index: 3;
 }
 
 .success {

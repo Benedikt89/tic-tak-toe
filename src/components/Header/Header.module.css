@@ -4,15 +4,17 @@
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
+    justify-content: space-around;
     height: 4rem;
     background-color: inherit;
-    padding: 0 9rem;
+    padding: 0 5%;
     box-shadow: 0 8px 10px rgba(159, 90, 12, 0.13);
 }
 
 .navContainer {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 .navContainer > * {
     text-decoration: none;
@@ -32,7 +34,6 @@
     cursor: pointer;
     margin-right: 1rem;
     font-size: 1.4rem;
-    color: #434343;
 }
 .item:hover {
     color: #adb5bd;

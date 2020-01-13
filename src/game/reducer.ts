@@ -26,7 +26,7 @@ const initialState: I_gameState = {
     isFrozen: false,
     isFetching: false,
     winner: null,
-    currentTurn: null,
+    currentTurn: "CROSS",
     error: null
 };
 
@@ -69,6 +69,7 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
                         player1Score: {...state.player1Score, drawsScore: state.player1Score.failsScore + 1},
                         player2Score: {...state.player2Score, drawsScore: state.player2Score.winsScore + 1},
                         winner: action.winner,
+                        currentTurn: null
                     };
                 case "DRAW":
                     return {
@@ -76,6 +77,7 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
                         player1Score: {...state.player1Score, drawsScore: state.player1Score.drawsScore + 1},
                         player2Score: {...state.player2Score, drawsScore: state.player2Score.drawsScore + 1},
                         winner: action.winner,
+                        currentTurn: null
                     };
                 case "USER":
                     return {
@@ -83,6 +85,7 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
                         player1Score: {...state.player1Score, winsScore: state.player1Score.winsScore + 1},
                         player2Score: {...state.player2Score, failsScore: state.player2Score.failsScore + 1},
                         winner: action.winner,
+                        currentTurn: null
                     };
                 default:
                     return state;
@@ -93,10 +96,9 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
                 turns: 0,
                 fields: fieldCreator(),
                 winner: null,
-                currentTurn: null
+                currentTurn: "CROSS"
             };
         case SET_AI_TURN:
-
             return {
                 ...state,
                 fields: action.newFields,
