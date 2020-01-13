@@ -142,3 +142,12 @@ textarea
     background-color: inherit !important;
     background-clip: padding-box;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #090a0d inset !important;
+}
+input:-webkit-autofill {
+    -webkit-text-fill-color: yellow !important;
+}

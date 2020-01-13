@@ -16,7 +16,7 @@ function Header(props: I_props) {
             {props.isAuth && <div className={style.navContainer}>
                 <div onClick={props.resetCount}>
                     <div className={style.item}>
-                        EndGame
+                        Exit
                     </div>
                 </div>
                 <div>

@@ -14,16 +14,28 @@ export const fetchGameData = () =>
             let resAsString = await gameDataApi.fetchData();
             await Promise.all([auth, resAsString]);
             let data = null;
-            if (resAsString) {
-                data = JSON.parse(resAsString);
+            // checking if data is a string
+            if (typeof resAsString === "string" || resAsString instanceof String) {
+                if (resAsString.length) {
+                    // @ts-ignore
+                    data = JSON.parse(resAsString);
+                }
+                if (data) dispatch(_fetchSuccess(data));
+            } else {
+                dispatch(_fetchSuccess(resAsString));
             }
-            if (data !== null) dispatch(_fetchSuccess(data));
             dispatch(_setError(null));
             dispatch(_toggleIsFetching(false));
         } catch (err) {
             console.log(err);
-            dispatch(_setError('network Problems'));
-            dispatch(_toggleIsFetching(false));
+            //if its no data return
+            if (err.response && err.response.config.url === "api.user.getstate" && err.response.status === 403) {
+                dispatch(_toggleIsFetching(false));
+                dispatch(_setError(null));
+            } else {
+                dispatch(_setError('network Problems'));
+                dispatch(_toggleIsFetching(false));
+            }
         }
     };
 export const postGameData = () =>
@@ -35,11 +47,13 @@ export const postGameData = () =>
                 player1Score: state.player1Score,
                 player2Score: state.player2Score,
                 turns: state.turns,
+                winner: state.winner
             };
+            //stringify data before sending
             let dataAsString = JSON.stringify(data);
             let res = await gameDataApi.postData(dataAsString);
-            debugger;
             console.log(res);
+            //if it was some errors remove them
             dispatch(_setError(null));
         } catch (err) {
             console.log(err);

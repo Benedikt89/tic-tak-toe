@@ -56,13 +56,13 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
             </h2>}
             {!winner && <h2>TIC-TAC-TOE</h2>}
 
-            <div className={style.row}>
+            {!winner && <div className={style.row}>
                 <span>Current turn :</span>
-                <img className={style.icon} src={bgImage()}/>
-            </div>
+                <img className={style.icon} src={bgImage()}  alt={bgImage()}/>
+            </div>}
 
             <div className={style.row}>
-                <div className={style.scoreButton}>
+                <span className={style.scoreButton}>
                     <div onClick={() => {
                         showStats('CROSS')
                     }}>
@@ -76,8 +76,8 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
                             showStats('')
                         }}
                     />}
-                </div>
-                <div className={style.scoreButton}>
+                </span>
+                <span className={style.scoreButton}>
                     <div onClick={() => {
                         showStats('ZERO')
                     }}>
@@ -91,12 +91,14 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
                             showStats('')
                         }}
                     />}
-                </div>
+                </span>
             </div>
 
             <div className={style.gameWrapper}>
+                <div className={style.oneToOneSizer}>
                 <div className={style.gameGrid}>
                     {gameButtons}
+                </div>
                 </div>
             </div>
         </div>

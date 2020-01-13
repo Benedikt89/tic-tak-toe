@@ -39,8 +39,10 @@
 .errorMessage
 {
     position: absolute;
-    top: -60%;
+    width: 120%;
+    top: -80%;
     left: 0;
+    font-size: 1rem;
 
     composes: mainErrorMessage;
 }

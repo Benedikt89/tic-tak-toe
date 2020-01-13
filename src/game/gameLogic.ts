@@ -12,6 +12,7 @@ let trippleCheck = (a: string | null, b: string | null, c: string | null,): bool
 };
 
 export const getWinner = (fields: Array<I_fieldItem>, turns: number): I_winnerCheck => {
+    //create winning combos
     const winningCombos = [
         [0, 1, 2],
         [3, 4, 5],
@@ -24,6 +25,8 @@ export const getWinner = (fields: Array<I_fieldItem>, turns: number): I_winnerCh
     ];
     let winner = null;
     let newFields = [...fields];
+
+    //check if in array exist winning combo
     winningCombos.forEach((combo, index) => {
         if (trippleCheck(fields[combo[0]].status, fields[combo[1]].status, fields[combo[2]].status)) {
             winner = fields[combo[0]].status === "CROSS" ? 'USER' : 'COMPUTER';

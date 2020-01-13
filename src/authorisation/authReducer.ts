@@ -2,6 +2,7 @@ import {CHECK_IS_AUTH, I_userState, LOGIN_SUCCESS, LOGOUT_SUCCESS, usersReducerA
 
 const initialState: I_userState = {
     isAuth: false,
+    //for multiply users information
     userId: null,
     userName: null,
     error: null

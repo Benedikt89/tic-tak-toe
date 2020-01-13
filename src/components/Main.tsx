@@ -13,7 +13,7 @@ import {checkIsAuth, logIn, logOut} from "../authorisation/actions";
 import {getIsAuth} from "../authorisation/selectors";
 import LoginPage from "./Login/Login";
 import Preloader from "./Common/Preloader";
-import {endGame, resetCount} from "../game/actions";
+import {resetCount} from "../game/actions";
 
 interface I_props {
     title?: string
@@ -44,8 +44,13 @@ class Main extends Component<I_MainProps> {
         this.props.fetchGameData();
     }
     componentDidUpdate(prevProps: Readonly<I_MainProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        //retrying connect to server
         if (this.props.appError) {
             setTimeout(() => { this.props.fetchGameData()}, 20000)
+        }
+        //fetch after login
+        if (this.props.isAuth !== prevProps.isAuth) {
+            this.props.fetchGameData();
         }
     }
 
