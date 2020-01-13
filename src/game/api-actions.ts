@@ -15,13 +15,11 @@ export const fetchGameData = () =>
             await Promise.all([auth, resAsString]);
             let data = null;
             // checking if data is a string
-            if (typeof resAsString === "string" || resAsString instanceof String) {
-                if (resAsString.length) {
-                    // @ts-ignore
-                    data = JSON.parse(resAsString);
-                }
-                if (data) dispatch(_fetchSuccess(data));
-            } else {
+            if (resAsString.length > 0) {
+                return typeof resAsString === "string" ? data = JSON.parse(resAsString) : resAsString;
+            }
+            if (data) dispatch(_fetchSuccess(data));
+            else if (resAsString.turns && resAsString.fields.length === 9) {
                 dispatch(_fetchSuccess(resAsString));
             }
             dispatch(_setError(null));
