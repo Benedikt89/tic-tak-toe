@@ -13,7 +13,7 @@ import {checkIsAuth, logIn, logOut} from "../authorisation/actions";
 import {getIsAuth} from "../authorisation/selectors";
 import LoginPage from "./Login/Login";
 import Preloader from "./Common/Preloader";
-import {resetCount} from "../game/actions";
+import {resetCount, setDemoMode} from "../game/actions";
 
 interface I_props {
     title?: string
@@ -25,6 +25,7 @@ interface I_connectedProps {
     error: string | null
     appError: string | null
     isFetching: boolean
+    demomode: boolean
 }
 
 interface I_dispatchedProps {
@@ -33,6 +34,7 @@ interface I_dispatchedProps {
     logIn: (data: any) => void
     checkIsAuth: () => void
     resetCount: () => void
+    setDemoMode: (status: boolean) => void
 }
 
 interface I_MainProps extends I_props, I_connectedProps, I_dispatchedProps, RouteComponentProps<{}> {
@@ -45,7 +47,7 @@ class Main extends Component<I_MainProps> {
     }
     componentDidUpdate(prevProps: Readonly<I_MainProps>, prevState: Readonly<{}>, snapshot?: any): void {
         //retrying connect to server
-        if (this.props.appError) {
+        if (this.props.appError && !this.props.demomode) {
             setTimeout(() => { this.props.fetchGameData()}, 20000)
         }
         //fetch after login
@@ -55,7 +57,7 @@ class Main extends Component<I_MainProps> {
     }
 
     render() {
-        let {turns, error, isAuth, logOut, appError, isFetching, logIn, resetCount} = this.props;
+        let {turns, error, isAuth, logOut, appError, isFetching, logIn, resetCount, demomode, setDemoMode} = this.props;
         return (
             <div>
                 <Header turns={turns} alert={error} isAuth={isAuth} logOut={logOut} resetCount={resetCount}/>
@@ -69,7 +71,17 @@ class Main extends Component<I_MainProps> {
                         <Preloader />
                     }
                 </div> :
-                    <div className={style.mainWrapper}><h2>{appError}</h2></div>
+                    <div className={style.mainWrapper}>
+                        <h2 className={style.warning}>{appError}</h2>
+                        {demomode && <GameScreen title={"DEMO MODE"}/>}
+                        {!demomode ?
+                            <button className={style.alertBtn} onClick={() => {setDemoMode(true)}}>
+                                TRY DEMO
+                            </button> :
+                            <button className={style.alertBtn} onClick={() => {setDemoMode(false)}}>
+                                LEAVE DEMO
+                            </button>}
+                    </div>
                 }
                 <Footer/>
             </div>
@@ -83,12 +95,13 @@ const mapStateToProps = (state: AppStateType): I_connectedProps => {
         turns: getTurns(state),
         error: state.auth.error,
         appError: getAppError(state),
-        isFetching: getIsFetching(state)
+        isFetching: getIsFetching(state),
+        demomode: state.reducer.demomode
     }
 };
 
 let ComposedComponent = connect(
-    mapStateToProps, {fetchGameData, logOut, checkIsAuth, logIn, resetCount}
+    mapStateToProps, {fetchGameData, logOut, checkIsAuth, logIn, resetCount, setDemoMode}
     )(Main);
 
 export default withRouter(ComposedComponent);

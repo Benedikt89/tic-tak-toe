@@ -10,6 +10,10 @@ import zeroImg from './../../assets/icons/zero.svg'
 import style from './../Main.module.css'
 import PopUpScore from "./PopUp";
 
+interface I_props {
+    title?: string
+}
+
 interface I_connectedProps {
     fields: Array<I_fieldItem>,
     winner: I_winner,
@@ -26,10 +30,10 @@ interface I_dispatchedProps {
     resetCount: () => void
 }
 
-interface I_mainProps extends I_connectedProps, I_dispatchedProps {
+interface I_mainProps extends I_connectedProps, I_dispatchedProps, I_props {
 }
 
-const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTurn, score}: I_mainProps) => {
+const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTurn, score, title}: I_mainProps) => {
     //Displaying cells
     let [isPopUpOpen, setPopUpOpen] = useState('');
 
@@ -50,6 +54,11 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
 
     return (
         <div className={style.fieldSizeWrapper}>
+
+            {title &&
+            <h1 onClick={resetCount} className={style.win}>
+                {title}
+            </h1>}
             {winner &&
             <h2 onClick={resetCount} className={style.win}>
                 {winner === "DRAW" ? 'Nobody' : winner} is winner, click here to reset

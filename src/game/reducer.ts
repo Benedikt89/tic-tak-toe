@@ -2,7 +2,7 @@ import {I_gameState} from "../types/types";
 import {
     END_GAME,
     I_actions, RESET_COUNT,
-    SET_AI_TURN, SET_ERROR, SET_FETCH_SUCCESS,
+    SET_AI_TURN, SET_DEMOMODE, SET_ERROR, SET_FETCH_SUCCESS,
     SET_IS_FETCHING,
     SET_IS_GAME_FROZEN, SET_TURN,
 } from "./actions";
@@ -27,7 +27,8 @@ const initialState: I_gameState = {
     isFetching: false,
     winner: null,
     currentTurn: "CROSS",
-    error: null
+    error: null,
+    demomode: false
 };
 
 const reducer = (state: I_gameState = initialState, action: I_actions) => {
@@ -42,6 +43,11 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
             return {
                 ...state,
                 error: action.message
+            };
+        case SET_DEMOMODE:
+            return {
+                ...state,
+                demomode: action.status
             };
         case SET_IS_GAME_FROZEN:
             return {

@@ -19,7 +19,8 @@ export interface I_gameState {
     isFetching: boolean,
     currentTurn: I_currentTurn,
     winner: I_winner,
-    error: null | string
+    error: null | string,
+    demomode: boolean
 }
 
 export type I_currentTurn = 'CROSS' | 'ZERO' | null

@@ -15,11 +15,13 @@ export const SET_IS_GAME_FROZEN = 'game/SET_IS_GAME_FROZEN';
 export const SET_FETCH_SUCCESS = 'app/SET_FETCH_SUCCESS';
 export const SET_IS_FETCHING = 'app/SET_IS_FETCHING';
 export const SET_ERROR = 'app/SET_ERROR';
+export const SET_DEMOMODE = 'app/SET_DEMOMODE';
 
 export type I_actions =
     I_resetCount | I_turnCross | I_turnZero |
     I_toggleIsFetching | I_isGameFrozen | I_isGameFrozen |
-    I_fetchSuccess | I_endGame | I_setError
+    I_fetchSuccess | I_endGame | I_setError |
+    I_setDemomode
 
 //interfaces
 interface I_resetCount {
@@ -62,50 +64,42 @@ interface I_setError {
     message: null | string
 }
 
-//Internal ACTIONS
-export const _fetchSuccess = (data: I_dataToStore): I_fetchSuccess => {
-    return {
-        type: SET_FETCH_SUCCESS, data
-    }
-};
-export const _turnCross = (newFields: Array<I_fieldItem>): I_turnCross => {
-    return {
-        type: SET_TURN, newFields
-    }
-};
-export const _turnZero = (newFields: Array<I_fieldItem>): I_turnZero => {
-    return {
-        type: SET_AI_TURN, newFields
-    }
-};
-export const _toggleIsFetching = (status: boolean): I_toggleIsFetching => {
-    return {
-        type: SET_IS_FETCHING, status
-    }
-};
-export const _toggleIsGameFrozen = (status: boolean): I_isGameFrozen => {
-    return {
-        type: SET_IS_GAME_FROZEN, status
-    }
-};
-export const _setError = (message: string | null): I_setError => {
-    return {
-        type: SET_ERROR, message
-    }
-};
-export const _endGame = (winner: I_winner, fields: Array<I_fieldItem>): I_endGame => ({
-    type: END_GAME, winner, fields
-});
+interface I_setDemomode {
+    type: typeof SET_DEMOMODE,
+    status: boolean
+}
+
+//Internal ACTIONS CREATORS
+export const _fetchSuccess = (data: I_dataToStore): I_fetchSuccess => ({ type: SET_FETCH_SUCCESS, data});
+
+export const _turnCross = (newFields: Array<I_fieldItem>): I_turnCross => ({ type: SET_TURN, newFields});
+
+export const _turnZero = (newFields: Array<I_fieldItem>): I_turnZero => ({ type: SET_AI_TURN, newFields});
+
+export const _toggleIsFetching = (status: boolean): I_toggleIsFetching => ({ type: SET_IS_FETCHING, status});
+
+export const _toggleIsGameFrozen = (status: boolean): I_isGameFrozen => ({ type: SET_IS_GAME_FROZEN, status});
+
+export const _setError = (message: string | null): I_setError => ({ type: SET_ERROR, message});
+
+export const _endGame = (winner: I_winner, fields: Array<I_fieldItem>): I_endGame => ({ type: END_GAME, winner, fields });
+
 export const resetCount = (): I_resetCount => ({type: RESET_COUNT});
+
+export const _setDemoMode = (status: boolean): I_setDemomode => ({type: SET_DEMOMODE, status});
 
 //EXTERNAL ACTIONS
 export const endGame = (winner: I_winner, fields: Array<I_fieldItem>) =>
     (dispatch: ThunkDispatch<{}, {}, I_actions>) => {
         dispatch(_endGame(winner, fields));
     };
+export const setDemoMode = (status: boolean) => (dispatch: ThunkDispatch<{}, {}, I_actions>) => {
+    dispatch(_setDemoMode(status));
+};
 
 export const onUserMove = (pressedField: I_fieldItem) =>
     async (dispatch: ThunkDispatch<{}, {}, any>, getState: GetStateType) => {
+        let ifDemoMode = getState().reducer.demomode;
         //freezing game for block user actions during requests
         dispatch(_toggleIsGameFrozen(true));
 
@@ -153,7 +147,9 @@ export const onUserMove = (pressedField: I_fieldItem) =>
             } else {
                 dispatch(endGame(isUserWinner.winner, isUserWinner.fields))
             }
-            await Promise.all([dispatch(postGameData())]);
+            if (!ifDemoMode) {
+                await Promise.all([dispatch(postGameData())]);
+            }
             dispatch(_toggleIsGameFrozen(false));
         }, 1000)
     };
