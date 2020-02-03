@@ -5,6 +5,7 @@ import {gameDataApi} from "./api";
 import {AppStateType} from "../redux/store";
 
 type GetStateType = () => AppStateType
+
 //API ACTIONS
 export const fetchGameData = () =>
     async (dispatch: ThunkDispatch<{}, {}, I_actions>) => {
@@ -47,9 +48,7 @@ export const postGameData = () =>
                 turns: state.turns,
                 winner: state.winner
             };
-            //stringify data before sending
-            let dataAsString = JSON.stringify(data);
-            let res = await gameDataApi.postData(dataAsString);
+            let res = await gameDataApi.postData(data);
             console.log(res);
             //if it was some errors remove them
             dispatch(_setError(null));

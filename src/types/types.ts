@@ -9,18 +9,20 @@ export interface I_scoreData {
     failsScore: number,
     drawsScore: number
 }
-
-export interface I_gameState {
-    fields: Array<I_fieldItem>,
+export interface I_dataToSend {
+    fields: I_fieldItem[],
     player1Score: I_scoreData,
     player2Score: I_scoreData,
-    turns: 0,
+    turns: number,
+    winner: I_winner
+}
+
+export interface I_gameState extends I_dataToSend{
     isFrozen: boolean,
     isFetching: boolean,
     currentTurn: I_currentTurn,
-    winner: I_winner,
     error: null | string,
-    demomode: boolean
+    demoMode: boolean
 }
 
 export type I_currentTurn = 'CROSS' | 'ZERO' | null
@@ -30,11 +32,4 @@ export type I_usedInWin = 'VERTICAL' | 'HORIZONTAL' | 'DRAW+90' | 'DRAW-90' | nu
 export interface I_winnerCheck {
     fields: Array<I_fieldItem>,
     winner: I_winner
-}
-
-export interface I_dataToStore {
-    fields: Array<I_fieldItem>,
-    userScore: I_scoreData,
-    computerScore: I_scoreData,
-    turns: number,
 }

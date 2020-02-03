@@ -25,7 +25,7 @@ interface I_connectedProps {
     error: string | null
     appError: string | null
     isFetching: boolean
-    demomode: boolean
+    demoMode: boolean
 }
 
 interface I_dispatchedProps {
@@ -41,14 +41,18 @@ interface I_MainProps extends I_props, I_connectedProps, I_dispatchedProps, Rout
 }
 
 class Main extends Component<I_MainProps> {
+    fetchTimeout: number | undefined;
 
     componentDidMount() {
         this.props.fetchGameData();
     }
+
     componentDidUpdate(prevProps: Readonly<I_MainProps>, prevState: Readonly<{}>, snapshot?: any): void {
         //retrying connect to server
-        if (this.props.appError && !this.props.demomode) {
-            setTimeout(() => { this.props.fetchGameData()}, 20000)
+        if (this.props.appError && !this.props.demoMode) {
+            this.fetchTimeout = window.setTimeout(() => {
+                this.props.fetchGameData()
+            }, 20000)
         }
         //fetch after login
         if (this.props.isAuth !== prevProps.isAuth) {
@@ -56,35 +60,37 @@ class Main extends Component<I_MainProps> {
         }
     }
 
+    componentWillUnmount(): void {
+        clearTimeout(this.fetchTimeout)
+    }
+
     render() {
-        let {turns, error, isAuth, logOut, appError, isFetching, logIn, resetCount, demomode, setDemoMode} = this.props;
-        return (
-            <div>
-                <Header turns={turns} alert={error} isAuth={isAuth} logOut={logOut} resetCount={resetCount}/>
-                {!appError ? <div className={style.mainWrapper}>
-                    {!isFetching ?
-                        isAuth ?
-                            <GameScreen />
-                            :
-                            <LoginPage logIn={logIn}/>
-                        :
-                        <Preloader />
-                    }
-                </div> :
-                    <div className={style.mainWrapper}>
-                        <h2 className={style.warning}>{appError}</h2>
-                        {demomode && <GameScreen title={"DEMO MODE"}/>}
-                        {!demomode ?
-                            <button className={style.alertBtn} onClick={() => {setDemoMode(true)}}>
-                                TRY DEMO
-                            </button> :
-                            <button className={style.alertBtn} onClick={() => {setDemoMode(false)}}>
-                                LEAVE DEMO
-                            </button>}
-                    </div>
+        let {turns, error, isAuth, logOut, appError, isFetching, logIn, resetCount, demoMode, setDemoMode} = this.props;
+
+        let contentBlock = () =>
+            <div className={style.mainWrapper}>
+                {isFetching && <Preloader/>}
+                {!isAuth ? <LoginPage logIn={logIn}/> : <GameScreen/>}
+            </div>;
+
+        let errorBlock = () =>
+            <div className={style.mainWrapper}>
+                <h2 className={style.warning}>{appError}</h2>
+                {demoMode && <GameScreen title={"DEMO MODE"}/>}
+                <button className={style.alertBtn} onClick={() => {
+                    setDemoMode(!demoMode)
+                }}>
+                    {!demoMode ? "TRY DEMO" : "LEAVE DEMO"}
+                </button>
                 }
+            </div>;
+
+        return (
+            <React.Fragment>
+                <Header turns={turns} alert={error} isAuth={isAuth} logOut={logOut} resetCount={resetCount}/>
+                {appError ? errorBlock : contentBlock}
                 <Footer/>
-            </div>
+            </React.Fragment>
         );
     }
 }
@@ -96,12 +102,12 @@ const mapStateToProps = (state: AppStateType): I_connectedProps => {
         error: state.auth.error,
         appError: getAppError(state),
         isFetching: getIsFetching(state),
-        demomode: state.reducer.demomode
+        demoMode: state.reducer.demoMode
     }
 };
 
 let ComposedComponent = connect(
     mapStateToProps, {fetchGameData, logOut, checkIsAuth, logIn, resetCount, setDemoMode}
-    )(Main);
+)(Main);
 
 export default withRouter(ComposedComponent);

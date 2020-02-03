@@ -28,7 +28,7 @@ const initialState: I_gameState = {
     winner: null,
     currentTurn: "CROSS",
     error: null,
-    demomode: false
+    demoMode: false
 };
 
 const reducer = (state: I_gameState = initialState, action: I_actions) => {
@@ -47,7 +47,7 @@ const reducer = (state: I_gameState = initialState, action: I_actions) => {
         case SET_DEMOMODE:
             return {
                 ...state,
-                demomode: action.status
+                demoMode: action.status
             };
         case SET_IS_GAME_FROZEN:
             return {

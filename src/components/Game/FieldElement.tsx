@@ -19,11 +19,17 @@ class GameField extends React.Component<I_Props> {
     };
 
 //bluring buttons after click to inform user about successful result or not
+    blurTimeout: number | undefined;
+
     clickTimeoutActive = () => {
         this.setState({socketBlur: true}, ()=>{
-            setTimeout(() => {this.setState({socketBlur: false, clickSuccess: false})}, 500)
+            this.blurTimeout = window.setTimeout(() => {this.setState({socketBlur: false, clickSuccess: false})}, 500)
         })
     };
+
+    componentWillUnmount(): void {
+        clearTimeout(this.blurTimeout)
+    }
 
     render() {
         let cx = classNames.bind(style);

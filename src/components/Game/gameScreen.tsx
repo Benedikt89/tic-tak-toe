@@ -72,9 +72,7 @@ const GameScreen = ({fields, isFrozen, onUserMove, winner, resetCount, currentTu
 
             <div className={style.row}>
                 <span className={style.scoreButton}>
-                    <div onClick={() => {
-                        showStats('CROSS')
-                    }}>
+                    <div onClick={() => {showStats('CROSS')}}>
                         Player Info <b>{score.player1Score.winsScore}</b>
                     </div>
                     {isPopUpOpen === 'CROSS' &&

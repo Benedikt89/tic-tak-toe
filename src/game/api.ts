@@ -1,5 +1,6 @@
 import axios from "axios";
 import {APIerrorLogger} from "../utils/errorLogger";
+import {I_dataToSend} from "../types/types";
 
 const instance = axios.create({
     baseURL: "http://localhost:8421/",
@@ -21,8 +22,10 @@ export const gameDataApi = {
                 }
             })
     },
-    postData (data:string) {
-        return instance.post('api.user.setstate', data)
+    postData (data:I_dataToSend) {
+        //stringify data before sending
+        let dataAsString = JSON.stringify(data);
+        return instance.post('api.user.setstate', dataAsString)
             .then(res => {
                 return res.data
             })
